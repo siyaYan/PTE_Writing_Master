@@ -107,7 +107,7 @@ export async function generateNormalEssay({
 }: NormalEssayRequest): Promise<NormalEssay> {
   const ai = getClient();
   const response = await ai.models.generateContent({
-    model: 'gemini-3.1-pro-preview',
+    model: 'gemini-3-flash-preview',
     contents: `
       Topic: ${topic}
       Context: ${desc}
