@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,900;1,900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-display: "Playfair Display", serif;
+}
+
+:root {
+  --score-red: #ef4444;
+  --score-amber: #f59e0b;
+  --score-green: #22c55e;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+}
+
+.ring-fg {
+  transition: stroke-dashoffset 0.8s ease, opacity 0.2s ease, stroke 0.2s ease;
+}
+
+@keyframes skel {
+  0% { background-position: 200% 0 }
+  100% { background-position: -200% 0 }
+}
+
+.skel-line {
+  background: linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9);
+  background-size: 200% 100%;
+  animation: skel 1.5s linear infinite;
+}
