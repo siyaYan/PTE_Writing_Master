@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+  --font-display: var(--font-playfair-display);
+}
+
+:root {
+  --score-red: #ef4444;
+  --score-amber: #f59e0b;
+  --score-green: #22c55e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+}
+
+.ring-fg {
+  transition: stroke-dashoffset 0.8s ease, opacity 0.2s ease, stroke 0.2s ease;
+}
+
+@keyframes skel {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skel-line {
+  background: linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9);
+  background-size: 200% 100%;
+  animation: skel 1.5s linear infinite;
+}

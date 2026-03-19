@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { getFastFeedback, FastFeedback } from '../services/geminiService';
 import { Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
@@ -13,15 +15,18 @@ export const FastPractice: React.FC<FastPracticeProps> = ({ topic, desc }) => {
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState<FastFeedback | null>(null);
   const [expandedAdvice, setExpandedAdvice] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleAnalyze = async () => {
     if (!sentence.trim()) return;
     setLoading(true);
+    setError(null);
     try {
       const result = await getFastFeedback(topic, desc, sentence);
       setFeedback(result);
     } catch (error) {
       console.error(error);
+      setError(error instanceof Error ? error.message : 'Unable to analyze the sentence right now.');
     } finally {
       setLoading(false);
     }
@@ -88,6 +93,12 @@ export const FastPractice: React.FC<FastPracticeProps> = ({ topic, desc }) => {
             </>
           )}
         </button>
+
+        {error && (
+          <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {error}
+          </p>
+        )}
       </div>
 
       {feedback && (

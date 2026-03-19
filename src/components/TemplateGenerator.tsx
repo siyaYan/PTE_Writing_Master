@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { generateTemplate, TemplateResult } from '../services/geminiService';
@@ -8,14 +10,17 @@ export const TemplateGenerator: React.FC = () => {
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<TemplateResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleGenerate = async () => {
     setLoading(true);
+    setError(null);
     try {
       const tpl = await generateTemplate(mode, notes);
       setResult(tpl);
     } catch (error) {
       console.error(error);
+      setError(error instanceof Error ? error.message : 'Unable to generate a template right now.');
     } finally {
       setLoading(false);
     }
@@ -72,6 +77,12 @@ export const TemplateGenerator: React.FC = () => {
             </>
           )}
         </button>
+
+        {error && (
+          <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {error}
+          </p>
+        )}
       </div>
 
       {result && (

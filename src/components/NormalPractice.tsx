@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { generateNormalEssay, NormalEssay } from '../services/geminiService';
@@ -12,6 +14,7 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({ topic, desc }) =
   const [sentences, setSentences] = useState(['', '', '', '', '']);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<NormalEssay | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSentenceChange = (index: number, value: string) => {
     const newSentences = [...sentences];
@@ -22,11 +25,13 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({ topic, desc }) =
   const handleGenerate = async () => {
     if (sentences.some(s => !s.trim())) return;
     setLoading(true);
+    setError(null);
     try {
       const essay = await generateNormalEssay(topic, desc, sentences);
       setResult(essay);
     } catch (error) {
       console.error(error);
+      setError(error instanceof Error ? error.message : 'Unable to build the essay right now.');
     } finally {
       setLoading(false);
     }
@@ -74,6 +79,12 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({ topic, desc }) =
           </>
         )}
       </button>
+
+      {error && (
+        <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </p>
+      )}
 
       {result && (
         <motion.div 
