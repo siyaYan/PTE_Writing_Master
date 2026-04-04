@@ -8,6 +8,8 @@ import type {
   TemplateResult,
 } from '@/types/gemini';
 
+const MODEL = process.env.GEMINI_MODEL || 'gemini-3-flash-preview';
+
 function getClient() {
   const apiKey = process.env.GEMINI_API_KEY;
 
@@ -33,7 +35,7 @@ export async function generateFastFeedback({
 }: FastFeedbackRequest): Promise<FastFeedback> {
   const ai = getClient();
   const response = await ai.models.generateContent({
-    model: 'gemini-3-flash-preview',
+    model: MODEL,
     contents: `
       Topic: ${topic}
       Context: ${desc}
@@ -107,7 +109,7 @@ export async function generateNormalEssay({
 }: NormalEssayRequest): Promise<NormalEssay> {
   const ai = getClient();
   const response = await ai.models.generateContent({
-    model: 'gemini-3-flash-preview',
+    model: MODEL,
     contents: `
       Topic: ${topic}
       Context: ${desc}
@@ -151,7 +153,7 @@ export async function generateTemplateResult({
 }: TemplateRequest): Promise<TemplateResult> {
   const ai = getClient();
   const response = await ai.models.generateContent({
-    model: 'gemini-3-flash-preview',
+    model: MODEL,
     contents: `
       Mode: ${mode}
       Notes: ${notes}
