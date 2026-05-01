@@ -161,9 +161,34 @@ export async function generateNormalEssay({
 export async function generateTemplateResult({
   topic,
   essayType,
+  mode = 'essay',
   notes,
 }: TemplateRequest): Promise<TemplateResult> {
   const ai = getClient();
+
+  const isTemplateMode = mode === 'template';
+  const systemInstruction = isTemplateMode
+    ? `
+        You are a PTE Writing expert. Generate a structured essay TEMPLATE with [placeholder]
+        markers for the ${essayType} pattern. Do NOT write the actual essay content.
+        Use [placeholder text] wherever the student should fill in their own ideas, reasons,
+        or examples. Use the actual topic "${topic || 'the topic'}" in the fixed structural
+        sentences (e.g. "People have different views about ${topic || 'the topic'}.") but keep
+        all content slots as [placeholder] markers.
+        Structure: exactly 4 paragraphs — Introduction (3 sentences), Body Paragraph 1
+        (5 sentences), Body Paragraph 2 (5 sentences), Conclusion (2 sentences).
+        Separate paragraphs with a blank line. Return JSON with the 4-paragraph template
+        string as "template" and 3-4 writing tips as "tips".
+      `
+    : `
+        You are a PTE Writing expert. Generate a complete model ${essayType}-style
+        PTE Write-Essay (220-280 words) about the given topic.
+        Structure: Introduction (3 sentences) → Body 1 (5 sentences) →
+        Body 2 (5 sentences) → Conclusion (2 sentences).
+        Use a mix of simple and complex sentence structures appropriate for PTE.
+        Return JSON with the full essay as "template" and 3-4 practical writing tips as "tips".
+      `;
+
   const response = await ai.models.generateContent({
     model: MODEL,
     contents: `
@@ -172,14 +197,7 @@ export async function generateTemplateResult({
       ${notes ? `Extra instructions: ${notes}` : ''}
     `,
     config: {
-      systemInstruction: `
-        You are a PTE Writing expert. Generate a complete model ${essayType}-style
-        PTE Write-Essay (220-280 words) about the given topic.
-        Structure: Introduction (3 sentences) → Body 1 (5 sentences) →
-        Body 2 (5 sentences) → Conclusion (2 sentences).
-        Use a mix of simple and complex sentence structures appropriate for PTE.
-        Return JSON with the full essay as "template" and 3-4 practical writing tips as "tips".
-      `,
+      systemInstruction,
       responseMimeType: 'application/json',
       responseSchema: {
         type: Type.OBJECT,

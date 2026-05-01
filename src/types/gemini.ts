@@ -43,6 +43,7 @@ export interface NormalEssayRequest {
 export interface TemplateRequest {
   topic: string;
   essayType: string;
+  mode?: 'template' | 'essay';
   notes?: string;
 }
 

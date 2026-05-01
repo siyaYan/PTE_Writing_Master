@@ -49,7 +49,8 @@ export function generateNormalEssay(
 export function generateTemplate(
   topic: string,
   essayType: string,
+  mode?: 'template' | 'essay',
   notes?: string,
 ): Promise<TemplateResult> {
-  return requestGemini<TemplateResult>('template', { topic, essayType, notes });
+  return requestGemini<TemplateResult>('template', { topic, essayType, mode, notes });
 }

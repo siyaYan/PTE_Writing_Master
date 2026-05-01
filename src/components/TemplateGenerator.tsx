@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { generateTemplate, TemplateResult } from '../services/geminiService';
-import { Layout, Sparkles, Clipboard, CheckCircle, Info } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
+import { generateTemplate, generateNormalEssay, TemplateResult, NormalEssay } from '../services/geminiService';
+import { Sparkles, Clipboard, CheckCircle, Info, RotateCcw, FileText } from 'lucide-react';
 import {
   ESSAY_TYPES, EssayTypeId, getEssayType,
-  substituteTemplate, ParagraphDef,
+  buildParagraphText,
 } from '../data/essayTemplates';
 
 interface TemplateGeneratorProps {
@@ -25,93 +25,107 @@ const ACCENT_IDLE: Record<string, string> = {
   amber:   'bg-white text-slate-700 border border-slate-200 hover:border-amber-300',
   rose:    'bg-white text-slate-700 border border-slate-200 hover:border-rose-300',
 };
-const ACCENT_SECTION: Record<string, string> = {
-  emerald: 'border-emerald-200 bg-emerald-50/40',
-  indigo:  'border-indigo-200 bg-indigo-50/40',
-  amber:   'border-amber-200 bg-amber-50/40',
-  rose:    'border-rose-200 bg-rose-50/40',
+const ACCENT_BORDER: Record<string, string> = {
+  emerald: 'border-emerald-200 focus:ring-emerald-300',
+  indigo:  'border-indigo-200 focus:ring-indigo-300',
+  amber:   'border-amber-200 focus:ring-amber-300',
+  rose:    'border-rose-200 focus:ring-rose-300',
 };
 const ACCENT_HEADER: Record<string, string> = {
-  emerald: 'text-emerald-800 border-b border-emerald-200',
-  indigo:  'text-indigo-800 border-b border-indigo-200',
-  amber:   'text-amber-800 border-b border-amber-200',
-  rose:    'text-rose-800 border-b border-rose-200',
+  emerald: 'bg-emerald-50 text-emerald-800 border-b border-emerald-100',
+  indigo:  'bg-indigo-50 text-indigo-800 border-b border-indigo-100',
+  amber:   'bg-amber-50 text-amber-800 border-b border-amber-100',
+  rose:    'bg-rose-50 text-rose-800 border-b border-rose-100',
 };
-const PLACEHOLDER_COLOR: Record<string, string> = {
-  emerald: 'bg-emerald-100 text-emerald-800',
-  indigo:  'bg-indigo-100 text-indigo-800',
-  amber:   'bg-amber-100 text-amber-800',
-  rose:    'bg-rose-100 text-rose-800',
+const ACCENT_RESET: Record<string, string> = {
+  emerald: 'text-emerald-500 hover:text-emerald-700 hover:bg-emerald-100',
+  indigo:  'text-indigo-400 hover:text-indigo-700 hover:bg-indigo-100',
+  amber:   'text-amber-500 hover:text-amber-700 hover:bg-amber-100',
+  rose:    'text-rose-400 hover:text-rose-700 hover:bg-rose-100',
 };
 
-function renderLine(text: string, topic: string, placeholderClass: string): React.ReactNode[] {
-  const withTopic = text
-    .replace(/\{topic\}/g, '\x00TOPIC\x00')
-    .replace(/\{Topic\}/g, '\x00TOPICCAP\x00');
-  const cap = topic ? topic.charAt(0).toUpperCase() + topic.slice(1) : '[topic]';
-  const parts = withTopic.split(/(\[[^\]]+\]|\x00TOPIC\x00|\x00TOPICCAP\x00)/g);
-  return parts.map((p, i) => {
-    if (p === '\x00TOPIC\x00') return <strong key={i} className="font-semibold underline underline-offset-2">{topic || '[topic]'}</strong>;
-    if (p === '\x00TOPICCAP\x00') return <strong key={i} className="font-semibold underline underline-offset-2">{cap}</strong>;
-    if (p.startsWith('[') && p.endsWith(']')) return <span key={i} className={`${placeholderClass} rounded px-0.5 font-medium`}>{p}</span>;
-    return p;
-  });
-}
-
-function StaticTemplate({ para, topic, accent }: { para: ParagraphDef; topic: string; accent: string }) {
-  const phClass = PLACEHOLDER_COLOR[accent];
-  return (
-    <div className={`rounded-xl border ${ACCENT_SECTION[accent]} overflow-hidden`}>
-      <div className={`px-4 py-2.5 font-bold text-sm ${ACCENT_HEADER[accent]}`}>
-        {para.section}
-        <span className="ml-2 text-[10px] font-normal opacity-60">{para.pattern}</span>
-      </div>
-      <div className="px-4 py-3 space-y-1.5 text-sm leading-relaxed text-slate-700">
-        {para.sentences.map((s, i) => (
-          <p key={i}>{renderLine(substituteTemplate(s.template, topic), topic, phClass)}</p>
-        ))}
-      </div>
-    </div>
-  );
-}
+const PARA_ROWS = [3, 6, 6, 3];
 
 export const TemplateGenerator: React.FC<TemplateGeneratorProps> = ({ topic = '' }) => {
   const [essayType, setEssayType] = useState<EssayTypeId>('discuss');
-  const [aiMode, setAiMode] = useState(false);
-  const [notes, setNotes] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [aiResult, setAiResult] = useState<TemplateResult | null>(null);
+  const [paraTexts, setParaTexts] = useState<string[]>(['', '', '', '']);
+
+  // loading: 'none' | 'template' | 'essay'
+  const [loadingAction, setLoadingAction] = useState<'none' | 'template' | 'essay'>('none');
+  const [templateResult, setTemplateResult] = useState<TemplateResult | null>(null);
+  const [essayResult, setEssayResult] = useState<NormalEssay | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [essayCopied, setEssayCopied] = useState(false);
 
   const typeDef = getEssayType(essayType);
   const accent = typeDef.accent;
 
-  const handleGenerate = async () => {
-    setLoading(true);
+  // Reset paragraph texts when essay type changes
+  useEffect(() => {
+    setParaTexts(typeDef.paragraphs.map(p => buildParagraphText(p, topic)));
+    setTemplateResult(null);
+    setEssayResult(null);
     setError(null);
-    setAiResult(null);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [essayType]);
+
+  const resetParagraph = (idx: number) => {
+    const text = buildParagraphText(typeDef.paragraphs[idx], topic);
+    setParaTexts(prev => { const n = [...prev]; n[idx] = text; return n; });
+  };
+
+  const handleParaChange = (idx: number, value: string) => {
+    setParaTexts(prev => { const n = [...prev]; n[idx] = value; return n; });
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(paraTexts.join('\n\n'));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  // Generates a new [placeholder]-style template and fills the textareas
+  const handleAiTemplate = async () => {
+    setLoadingAction('template');
+    setError(null);
+    setTemplateResult(null);
     try {
-      const result = await generateTemplate(topic, essayType, notes || undefined);
-      setAiResult(result);
-      setAiMode(true);
+      const result = await generateTemplate(topic, essayType, 'template');
+      setTemplateResult(result);
+      // Split returned template into 4 paragraphs and fill textareas
+      const parts = result.template.split(/\n\n+/);
+      const padded: string[] = [...parts, '', '', '', ''].slice(0, 4);
+      setParaTexts(padded);
     } catch (err) {
       console.error(err);
-      setError(err instanceof Error ? err.message : 'Unable to generate a template right now.');
+      setError(err instanceof Error ? err.message : 'Unable to generate template right now.');
     } finally {
-      setLoading(false);
+      setLoadingAction('none');
     }
   };
 
-  const staticText = typeDef.paragraphs
-    .map(p => p.sentences.map(s => substituteTemplate(s.template, topic)).join(' '))
-    .join('\n\n');
+  // Generates a full written essay from the current template content
+  const handleAiEssay = async () => {
+    setLoadingAction('essay');
+    setError(null);
+    setEssayResult(null);
+    try {
+      const result = await generateNormalEssay(topic, '', paraTexts, essayType);
+      setEssayResult(result);
+    } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : 'Unable to generate essay right now.');
+    } finally {
+      setLoadingAction('none');
+    }
+  };
 
-  const handleCopy = () => {
-    const text = aiMode && aiResult ? aiResult.template : staticText;
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopyEssay = () => {
+    if (!essayResult) return;
+    navigator.clipboard.writeText(essayResult.essay);
+    setEssayCopied(true);
+    setTimeout(() => setEssayCopied(false), 2000);
   };
 
   return (
@@ -122,7 +136,7 @@ export const TemplateGenerator: React.FC<TemplateGeneratorProps> = ({ topic = ''
         {ESSAY_TYPES.map(t => (
           <button
             key={t.id}
-            onClick={() => { setEssayType(t.id); setAiMode(false); setAiResult(null); }}
+            onClick={() => setEssayType(t.id)}
             className={`px-3 py-3 rounded-xl text-xs font-bold transition-all text-left ${
               essayType === t.id ? ACCENT_ACTIVE[t.accent] : ACCENT_IDLE[t.accent]
             }`}
@@ -135,109 +149,125 @@ export const TemplateGenerator: React.FC<TemplateGeneratorProps> = ({ topic = ''
         ))}
       </div>
 
-      {/* Mode toggle bar */}
-      <div className="flex items-center justify-between">
+      {/* Action bar */}
+      <div className="flex items-center gap-2 justify-between">
+        {!topic ? (
+          <p className="text-[11px] text-amber-600 font-medium flex items-center gap-1">
+            <Info size={12} /> Select a topic in Step 1 to fill in the template.
+          </p>
+        ) : <span />}
+
         <div className="flex items-center gap-2">
           <button
-            onClick={() => setAiMode(false)}
-            className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors ${
-              !aiMode ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+            onClick={handleCopy}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${
+              copied
+                ? 'bg-emerald-600 text-white border-emerald-600'
+                : 'bg-white border-slate-200 text-slate-600 hover:border-slate-400'
             }`}
           >
-            Static Template
+            {copied ? <CheckCircle size={13} /> : <Clipboard size={13} />}
+            {copied ? 'Copied!' : 'Copy Template'}
           </button>
+
           <button
-            onClick={() => aiResult && setAiMode(true)}
-            disabled={!aiResult}
-            className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors ${
-              aiMode ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-400 disabled:opacity-40'
-            }`}
+            onClick={handleAiTemplate}
+            disabled={loadingAction !== 'none'}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-slate-900 text-white hover:bg-slate-700 disabled:opacity-50 transition-all"
           >
-            AI Version
+            {loadingAction === 'template'
+              ? <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              : <Sparkles size={13} />}
+            {loadingAction === 'template' ? 'Generating…' : 'AI Template'}
           </button>
         </div>
-        <button
-          onClick={handleCopy}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${
-            copied ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-400'
-          }`}
-        >
-          {copied ? <CheckCircle size={13} /> : <Clipboard size={13} />}
-          {copied ? 'Copied!' : 'Copy Template'}
-        </button>
       </div>
 
-      {/* Template Display */}
-      <AnimatePresence mode="wait">
-        {!aiMode ? (
-          <motion.div key="static" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
-            {!topic && (
-              <div className="flex items-center gap-2 px-4 py-2.5 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-700 font-medium">
-                <Info size={14} className="shrink-0" />
-                Select a topic in Step 1 to substitute <span className="font-mono">[topic]</span> automatically.
+      {/* Editable paragraph sections */}
+      <div className="space-y-4">
+        {typeDef.paragraphs.map((para, idx) => (
+          <div key={para.section} className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+            <div className={`flex items-center justify-between px-4 py-2.5 ${ACCENT_HEADER[accent]}`}>
+              <div>
+                <span className="font-bold text-sm">{para.section}</span>
+                <span className="ml-2 text-[10px] font-normal opacity-60">{para.pattern}</span>
               </div>
-            )}
-            {typeDef.paragraphs.map((para, i) => (
-              <StaticTemplate key={i} para={para} topic={topic} accent={accent} />
-            ))}
-          </motion.div>
-        ) : (
-          <motion.div key="ai" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            {aiResult && (
-              <div className="space-y-4">
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-8 h-8 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600">
-                      <Layout size={16} />
-                    </div>
-                    <h3 className="font-bold text-slate-900">AI-Generated Essay</h3>
-                  </div>
-                  <p className="text-slate-700 leading-relaxed whitespace-pre-wrap text-sm">{aiResult.template}</p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {aiResult.tips.map((tip, i) => (
-                    <div key={i} className="flex gap-2 p-3 bg-white border border-slate-200 rounded-xl shadow-sm">
-                      <Info size={16} className="text-indigo-400 shrink-0 mt-0.5" />
-                      <p className="text-xs text-slate-600">{tip}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+              <button
+                onClick={() => resetParagraph(idx)}
+                className={`p-1.5 rounded-lg transition-colors ${ACCENT_RESET[accent]}`}
+                title="Reset to default template"
+              >
+                <RotateCcw size={13} />
+              </button>
+            </div>
+            <textarea
+              value={paraTexts[idx]}
+              onChange={e => handleParaChange(idx, e.target.value)}
+              rows={PARA_ROWS[idx]}
+              className={`w-full px-4 py-3 text-sm leading-relaxed text-slate-700 bg-white outline-none resize-y focus:ring-2 focus:ring-inset ${ACCENT_BORDER[accent]}`}
+            />
+          </div>
+        ))}
+      </div>
 
-      {/* AI Generate section */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
-        <div>
-          <h3 className="font-bold text-sm text-slate-900">Generate AI Version</h3>
-          <p className="text-xs text-slate-400 mt-0.5">
-            AI will write a complete model essay for <strong>{topic || 'the selected topic'}</strong> using the <strong>{typeDef.label}</strong> pattern.
-          </p>
-        </div>
-        <textarea
-          value={notes}
-          onChange={e => setNotes(e.target.value)}
-          placeholder="Optional: extra instructions (e.g. keep it formal, use cohesive devices…)"
-          rows={2}
-          className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-indigo-400 outline-none transition-all text-sm resize-none"
-        />
-        <button
-          onClick={handleGenerate}
-          disabled={loading}
-          className="w-full py-3 bg-slate-900 text-white rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-slate-800 disabled:opacity-50 transition-all"
+      {error && (
+        <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>
+      )}
+
+      {/* AI Essay Generate button */}
+      <button
+        onClick={handleAiEssay}
+        disabled={loadingAction !== 'none' || paraTexts.every(p => !p.trim())}
+        className="w-full py-3.5 bg-indigo-600 text-white rounded-2xl font-semibold flex items-center justify-center gap-2 hover:bg-indigo-700 disabled:opacity-50 transition-all shadow-md"
+      >
+        {loadingAction === 'essay'
+          ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          : <><FileText size={18} /> Generate AI Essay from Template</>}
+      </button>
+
+      {/* AI Essay Result */}
+      {essayResult && (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-4"
         >
-          {loading ? (
-            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-          ) : (
-            <><Sparkles size={16} /> Generate AI Essay</>
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-3 bg-indigo-50 border-b border-indigo-100">
+              <div className="flex items-center gap-2">
+                <FileText size={14} className="text-indigo-500" />
+                <span className="font-bold text-sm text-indigo-800">AI Generated Essay</span>
+                <span className="text-[10px] text-indigo-400 font-semibold">{essayResult.wordCount} words · {essayResult.score.pte}/5</span>
+              </div>
+              <button
+                onClick={handleCopyEssay}
+                className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-all ${
+                  essayCopied
+                    ? 'bg-emerald-600 text-white border-emerald-600'
+                    : 'bg-white border-indigo-200 text-indigo-600 hover:border-indigo-400'
+                }`}
+              >
+                {essayCopied ? <CheckCircle size={12} /> : <Clipboard size={12} />}
+                {essayCopied ? 'Copied!' : 'Copy'}
+              </button>
+            </div>
+            <div className="px-5 py-4">
+              <p className="text-sm leading-relaxed text-slate-700 whitespace-pre-wrap">{essayResult.essay}</p>
+            </div>
+          </div>
+
+          {essayResult.notes.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {essayResult.notes.map((note, i) => (
+                <div key={i} className="flex gap-2 p-3 bg-white border border-slate-200 rounded-xl shadow-sm">
+                  <Info size={15} className="text-indigo-400 shrink-0 mt-0.5" />
+                  <p className="text-xs text-slate-600">{note}</p>
+                </div>
+              ))}
+            </div>
           )}
-        </button>
-        {error && (
-          <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>
-        )}
-      </div>
+        </motion.div>
+      )}
     </div>
   );
 };
