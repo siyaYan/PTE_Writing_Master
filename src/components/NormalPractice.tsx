@@ -3,14 +3,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { generateNormalEssay, NormalEssay } from '../services/geminiService';
-import { FileText, Sparkles, Clipboard, Timer, RotateCcw } from 'lucide-react';
+import { FileText, Sparkles, Clipboard, Timer, RotateCcw, Send, Bot, CheckCircle, XCircle } from 'lucide-react';
 
 interface NormalPracticeProps {
   topic: string;
   desc: string;
+  isPredicted: boolean;
+  sourceId: string;
 }
 
 const ESSAY_SECONDS = 20 * 60;
+const WEBHOOK_URL = process.env.NEXT_PUBLIC_WEBHOOK_URL ?? 'http://localhost:5000/mcp/incoming';
 
 function formatTime(secs: number): string {
   const m = Math.floor(secs / 60).toString().padStart(2, '0');
@@ -18,7 +21,7 @@ function formatTime(secs: number): string {
   return `${m}:${s}`;
 }
 
-export const NormalPractice: React.FC<NormalPracticeProps> = ({ topic, desc }) => {
+export const NormalPractice: React.FC<NormalPracticeProps> = ({ topic, desc, isPredicted, sourceId }) => {
   const [sentences, setSentences] = useState(['', '', '', '', '']);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<NormalEssay | null>(null);
@@ -26,7 +29,13 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({ topic, desc }) =
 
   const [timerSeconds, setTimerSeconds] = useState(ESSAY_SECONDS);
   const [timerRunning, setTimerRunning] = useState(false);
+  const [timeTakenSnapshot, setTimeTakenSnapshot] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Review action states
+  const [sendingReview, setSendingReview] = useState(false);
+  const [reviewStatus, setReviewStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [copiedForClaude, setCopiedForClaude] = useState(false);
 
   useEffect(() => {
     if (timerRunning && timerSeconds > 0) {
@@ -76,8 +85,10 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({ topic, desc }) =
   const handleGenerate = async () => {
     if (sentences.some(s => !s.trim())) return;
     setTimerRunning(false);
+    setTimeTakenSnapshot(ESSAY_SECONDS - timerSeconds);
     setLoading(true);
     setError(null);
+    setReviewStatus('idle');
     try {
       const essay = await generateNormalEssay(topic, desc, sentences);
       setResult(essay);
@@ -95,6 +106,48 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({ topic, desc }) =
     }
   };
 
+  const buildPayload = () => ({
+    Topic: topic,
+    Is_Predicted: isPredicted ? 'Y' : 'N',
+    Source_Id: sourceId || 'N/A',
+    Essay_Content: result?.essay ?? sentences.filter(Boolean).join('\n\n'),
+    Word_Count: result?.wordCount ?? totalWordCount,
+    Time_Taken: formatTime(timeTakenSnapshot),
+  });
+
+  const handleSendForReview = async () => {
+    setSendingReview(true);
+    setReviewStatus('idle');
+    try {
+      const res = await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(buildPayload()),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setReviewStatus('success');
+    } catch {
+      setReviewStatus('error');
+    } finally {
+      setSendingReview(false);
+    }
+  };
+
+  const handleCopyForClaude = () => {
+    const p = buildPayload();
+    const prompt = `Please score the following content based on the official PTE guidelines in my NotebookLM.
+Topic: "${p.Topic}",
+Is_Predicted: "${p.Is_Predicted}",
+Source_Id: "${p.Source_Id}",
+Essay_Content: "${p.Essay_Content}",
+Word_Count: ${p.Word_Count},
+Time_Taken: "${p.Time_Taken}"
+After scoring, use the Notion MCP to log this to my PTE Tracker.`;
+    navigator.clipboard.writeText(prompt);
+    setCopiedForClaude(true);
+    setTimeout(() => setCopiedForClaude(false), 2000);
+  };
+
   return (
     <div className="space-y-6">
       {/* Timer bar */}
@@ -107,7 +160,7 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({ topic, desc }) =
           )}
         </div>
         <div className="flex items-center gap-3">
-          <span className={`text-2xl font-black font-mono tabular-nums ${timerColor}`}>
+          <span className={`text-2xl font-black font-mono tabular-nums ${timerColor} ${timerSeconds <= 120 && timerSeconds > 0 ? 'animate-pulse' : ''}`}>
             {formatTime(timerSeconds)}
           </span>
           <span className="text-xs font-semibold text-slate-400 tabular-nums">
@@ -177,7 +230,7 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({ topic, desc }) =
               <button
                 onClick={copyToClipboard}
                 className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-slate-100 hover:text-slate-600 transition-all"
-                title="Copy to clipboard"
+                title="Copy essay to clipboard"
               >
                 <Clipboard size={18} />
               </button>
@@ -192,6 +245,7 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({ topic, desc }) =
                 <div className="flex gap-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                   <span>{result.wordCount} Words</span>
                   <span>Score: {result.score.pte}/5</span>
+                  <span>Time: {formatTime(timeTakenSnapshot)}</span>
                 </div>
               </div>
             </div>
@@ -209,6 +263,79 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({ topic, desc }) =
                 {note}
               </div>
             ))}
+          </div>
+
+          {/* Review Actions */}
+          <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
+            <div>
+              <h3 className="text-sm font-bold text-slate-900">Submit for Review</h3>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Send your essay for official scoring or copy a prompt for Claude.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Webhook button */}
+              <button
+                onClick={handleSendForReview}
+                disabled={sendingReview}
+                className={`flex items-center justify-center gap-2 px-4 py-3 rounded-2xl font-semibold text-sm transition-all shadow-sm disabled:opacity-60 ${
+                  reviewStatus === 'success'
+                    ? 'bg-emerald-600 text-white hover:bg-emerald-700'
+                    : reviewStatus === 'error'
+                    ? 'bg-red-600 text-white hover:bg-red-700'
+                    : 'bg-slate-900 text-white hover:bg-slate-700'
+                }`}
+              >
+                {sendingReview ? (
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : reviewStatus === 'success' ? (
+                  <CheckCircle size={16} />
+                ) : reviewStatus === 'error' ? (
+                  <XCircle size={16} />
+                ) : (
+                  <Send size={16} />
+                )}
+                {sendingReview
+                  ? 'Sending…'
+                  : reviewStatus === 'success'
+                  ? 'Sent Successfully'
+                  : reviewStatus === 'error'
+                  ? 'Failed — Retry'
+                  : 'Send for Official Review'}
+              </button>
+
+              {/* Copy for Claude button */}
+              <button
+                onClick={handleCopyForClaude}
+                className={`flex items-center justify-center gap-2 px-4 py-3 rounded-2xl font-semibold text-sm border transition-all ${
+                  copiedForClaude
+                    ? 'bg-indigo-600 text-white border-indigo-600'
+                    : 'bg-white text-slate-700 border-slate-200 hover:border-indigo-400 hover:text-indigo-600'
+                }`}
+              >
+                {copiedForClaude ? <CheckCircle size={16} /> : <Bot size={16} />}
+                {copiedForClaude ? 'Copied to Clipboard!' : 'Copy for Claude'}
+              </button>
+            </div>
+
+            {reviewStatus === 'error' && (
+              <p className="text-xs text-red-500">
+                Could not reach <span className="font-mono">{WEBHOOK_URL}</span>. Make sure the local MCP server is running.
+              </p>
+            )}
+
+            {/* Payload preview */}
+            <details className="group">
+              <summary className="text-[10px] font-bold text-slate-400 uppercase tracking-widest cursor-pointer hover:text-slate-600 transition-colors list-none flex items-center gap-1">
+                <span className="group-open:hidden">▶</span>
+                <span className="hidden group-open:inline">▼</span>
+                Preview Payload
+              </summary>
+              <pre className="mt-2 p-3 bg-slate-50 border border-slate-100 rounded-xl text-[11px] text-slate-600 font-mono overflow-x-auto whitespace-pre-wrap break-all">
+                {JSON.stringify(buildPayload(), null, 2)}
+              </pre>
+            </details>
           </div>
         </motion.div>
       )}

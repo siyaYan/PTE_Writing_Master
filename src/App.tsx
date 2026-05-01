@@ -10,10 +10,10 @@ import { BookOpen, Zap, FileText, Layout } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'fast' | 'normal' | 'template'>('fast');
-  const [topic, setTopic] = useState({ title: '', desc: '' });
+  const [topic, setTopic] = useState({ title: '', desc: '', isPredicted: false, sourceId: '' });
 
-  const handleTopicChange = (title: string, desc: string) => {
-    setTopic({ title, desc });
+  const handleTopicChange = (title: string, desc: string, isPredicted = false, sourceId = '') => {
+    setTopic({ title, desc, isPredicted, sourceId });
   };
 
   const tabs = [
@@ -96,7 +96,7 @@ export default function App() {
                 transition={{ duration: 0.2 }}
               >
                 {activeTab === 'fast' && <FastPractice topic={topic.title} desc={topic.desc} />}
-                {activeTab === 'normal' && <NormalPractice topic={topic.title} desc={topic.desc} />}
+                {activeTab === 'normal' && <NormalPractice topic={topic.title} desc={topic.desc} isPredicted={topic.isPredicted} sourceId={topic.sourceId} />}
                 {activeTab === 'template' && <TemplateGenerator />}
               </motion.div>
             </AnimatePresence>

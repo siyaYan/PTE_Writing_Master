@@ -55,7 +55,7 @@ const ALL_TOPICS: ProcessedTopic[] = (
 }));
 
 interface TopicSelectorProps {
-  onTopicChange: (title: string, desc: string) => void;
+  onTopicChange: (title: string, desc: string, isPredicted?: boolean, sourceId?: string) => void;
 }
 
 export const TopicSelector: React.FC<TopicSelectorProps> = ({ onTopicChange }) => {
@@ -83,7 +83,7 @@ export const TopicSelector: React.FC<TopicSelectorProps> = ({ onTopicChange }) =
     setPredictedOnly(next);
     if (selectedTopic && next && !selectedTopic.predict) {
       setSelectedId('custom');
-      onTopicChange(customTitle, '');
+      onTopicChange(customTitle, '', false, '');
     }
   };
 
@@ -91,7 +91,7 @@ export const TopicSelector: React.FC<TopicSelectorProps> = ({ onTopicChange }) =
     setActiveCat(cat);
     if (selectedTopic && cat !== 'All' && selectedTopic.cat !== cat) {
       setSelectedId('custom');
-      onTopicChange(customTitle, '');
+      onTopicChange(customTitle, '', false, '');
     }
   };
 
@@ -100,7 +100,7 @@ export const TopicSelector: React.FC<TopicSelectorProps> = ({ onTopicChange }) =
     const pick = filteredTopics[Math.floor(Math.random() * filteredTopics.length)];
     setSelectedId(pick.id);
     setHintOpen(false);
-    onTopicChange(pick.topic, pick.topic_sentence);
+    onTopicChange(pick.topic, pick.topic_sentence, pick.predict, pick.sourceLabel);
   }, [filteredTopics, onTopicChange]);
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -108,17 +108,17 @@ export const TopicSelector: React.FC<TopicSelectorProps> = ({ onTopicChange }) =
     setSelectedId(id);
     setHintOpen(false);
     if (id === 'custom') {
-      onTopicChange(customTitle, '');
+      onTopicChange(customTitle, '', false, '');
     } else {
       const t = ALL_TOPICS.find(t => t.id === id);
-      if (t) onTopicChange(t.topic, t.topic_sentence);
+      if (t) onTopicChange(t.topic, t.topic_sentence, t.predict, t.sourceLabel);
     }
   };
 
   const handleCustomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setCustomTitle(val);
-    if (selectedId === 'custom') onTopicChange(val, '');
+    if (selectedId === 'custom') onTopicChange(val, '', false, '');
   };
 
   const catCount = (cat: string) => {
