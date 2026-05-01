@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { generateNormalEssay, NormalEssay } from '../services/geminiService';
 import {
-  FileText, Sparkles, Clipboard, Timer, RotateCcw,
+  Sparkles, Timer, RotateCcw,
   Send, Bot, CheckCircle, XCircle, ChevronDown, ChevronUp,
 } from 'lucide-react';
 import {
@@ -73,12 +73,11 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({
   const [hintsOpen, setHintsOpen] = useState([false, false, false, false]);
 
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<NormalEssay | null>(null);
+  const [feedback, setFeedback] = useState<NormalEssay | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const [timerSeconds, setTimerSeconds] = useState(ESSAY_SECONDS);
   const [timerRunning, setTimerRunning] = useState(false);
-  const [timeTakenSnapshot, setTimeTakenSnapshot] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const textareaRefs = useRef<(HTMLTextAreaElement | null)[]>([null, null, null, null]);
 
@@ -144,6 +143,8 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({
     setTimerSeconds(ESSAY_SECONDS);
   };
 
+  const stopTimer = () => setTimerRunning(false);
+
   const totalWords = wordCount(paragraphs.join(' '));
 
   const timerColor = timerSeconds <= 120 ? 'text-red-600'
@@ -151,34 +152,33 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({
   const timerBg = timerSeconds <= 120 ? 'bg-red-50 border-red-200'
     : timerSeconds <= 300 ? 'bg-amber-50 border-amber-200' : 'bg-slate-50 border-slate-200';
 
-  const handleGenerate = async () => {
-    if (paragraphs.some(p => !p.trim())) return;
-    setTimerRunning(false);
-    setTimeTakenSnapshot(ESSAY_SECONDS - timerSeconds);
+  const buildPayload = () => ({
+    Topic: topic,
+    Is_Predicted: isPredicted ? 'Y' : 'N',
+    Source_Id: sourceId || 'N/A',
+    Essay_Content: paragraphs.filter(Boolean).join('\n\n'),
+    Word_Count: totalWords,
+    Time_Taken: formatTime(ESSAY_SECONDS - timerSeconds),
+  });
+
+  const handleGetFeedback = async () => {
+    if (totalWords === 0) return;
+    stopTimer();
     setLoading(true);
     setError(null);
-    setReviewStatus('idle');
     try {
-      const essay = await generateNormalEssay(topic, desc, paragraphs, essayType);
-      setResult(essay);
+      const result = await generateNormalEssay(topic, desc, paragraphs, essayType);
+      setFeedback(result);
     } catch (err) {
       console.error(err);
-      setError(err instanceof Error ? err.message : 'Unable to build the essay right now.');
+      setError(err instanceof Error ? err.message : 'Unable to get feedback right now.');
     } finally {
       setLoading(false);
     }
   };
 
-  const buildPayload = () => ({
-    Topic: topic,
-    Is_Predicted: isPredicted ? 'Y' : 'N',
-    Source_Id: sourceId || 'N/A',
-    Essay_Content: result?.essay ?? paragraphs.filter(Boolean).join('\n\n'),
-    Word_Count: result?.wordCount ?? totalWords,
-    Time_Taken: formatTime(timeTakenSnapshot),
-  });
-
   const handleSendForReview = async () => {
+    stopTimer();
     setSendingReview(true);
     setReviewStatus('idle');
     try {
@@ -197,6 +197,7 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({
   };
 
   const handleCopyForClaude = () => {
+    stopTimer();
     const p = buildPayload();
     const prompt = `Please score the following content based on the official PTE guidelines in my NotebookLM.
 Topic: "${p.Topic}",
@@ -260,7 +261,6 @@ After scoring, use the Notion MCP to log this to my PTE Tracker.`;
         const isOpen = hintsOpen[idx];
         return (
           <div key={para.section} className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            {/* Section header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
               <div>
                 <span className="font-bold text-sm text-slate-900">{para.section}</span>
@@ -274,7 +274,6 @@ After scoring, use the Notion MCP to log this to my PTE Tracker.`;
               </button>
             </div>
 
-            {/* Sentence hints panel */}
             <AnimatePresence>
               {isOpen && (
                 <motion.div
@@ -297,7 +296,6 @@ After scoring, use the Notion MCP to log this to my PTE Tracker.`;
                         <button
                           onClick={() => insertSentence(idx, s.template)}
                           className={`shrink-0 text-[10px] font-bold px-2 py-0.5 rounded transition-colors ${ACCENT_FILL[accent]} bg-white border border-current`}
-                          title="Insert this sentence"
                         >
                           Insert ↑
                         </button>
@@ -308,7 +306,6 @@ After scoring, use the Notion MCP to log this to my PTE Tracker.`;
               )}
             </AnimatePresence>
 
-            {/* Textarea */}
             <div className="p-4 space-y-2">
               <textarea
                 ref={el => { textareaRefs.current[idx] = el; }}
@@ -326,131 +323,100 @@ After scoring, use the Notion MCP to log this to my PTE Tracker.`;
               <div className="flex items-center justify-between">
                 <button
                   onClick={() => fillParagraph(idx)}
-                  className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors ${ACCENT_FILL[accent]} bg-transparent`}
+                  className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors ${ACCENT_FILL[accent]}`}
                 >
                   Fill Template ▸
                 </button>
-                <span className="text-xs text-slate-400 tabular-nums">
-                  {pWords} <span className="font-normal">words</span>
-                </span>
+                <span className="text-xs text-slate-400 tabular-nums">{pWords} words</span>
               </div>
             </div>
           </div>
         );
       })}
 
-      {/* Build Essay Button */}
-      <button
-        onClick={handleGenerate}
-        disabled={loading || paragraphs.some(p => !p.trim())}
-        className="w-full py-4 bg-slate-900 text-white rounded-2xl font-semibold flex items-center justify-center gap-2 hover:bg-slate-800 disabled:opacity-50 transition-all shadow-lg"
-      >
-        {loading ? (
-          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-        ) : (
-          <>
-            <Sparkles size={18} />
-            Polish &amp; Build Full Essay
-          </>
+      {/* Action Buttons */}
+      <div className="space-y-3">
+        <button
+          onClick={handleGetFeedback}
+          disabled={loading || totalWords === 0}
+          className="w-full py-3.5 bg-slate-900 text-white rounded-2xl font-semibold flex items-center justify-center gap-2 hover:bg-slate-800 disabled:opacity-50 transition-all shadow-lg"
+        >
+          {loading
+            ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            : <><Sparkles size={18} /> Get AI Feedback</>}
+        </button>
+
+        <div className="grid grid-cols-2 gap-3">
+          <button
+            onClick={handleSendForReview}
+            disabled={sendingReview || totalWords === 0}
+            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-2xl font-semibold text-sm transition-all shadow-sm disabled:opacity-50 ${
+              reviewStatus === 'success' ? 'bg-emerald-600 text-white'
+                : reviewStatus === 'error' ? 'bg-red-600 text-white'
+                : 'bg-slate-800 text-white hover:bg-slate-700'
+            }`}
+          >
+            {sendingReview
+              ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              : reviewStatus === 'success' ? <CheckCircle size={16} />
+              : reviewStatus === 'error' ? <XCircle size={16} />
+              : <Send size={16} />}
+            {sendingReview ? 'Sending…'
+              : reviewStatus === 'success' ? 'Sent!'
+              : reviewStatus === 'error' ? 'Failed — Retry'
+              : 'Send for Review'}
+          </button>
+
+          <button
+            onClick={handleCopyForClaude}
+            disabled={totalWords === 0}
+            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-2xl font-semibold text-sm border transition-all disabled:opacity-50 ${
+              copiedForClaude
+                ? 'bg-indigo-600 text-white border-indigo-600'
+                : 'bg-white text-slate-700 border-slate-200 hover:border-indigo-400 hover:text-indigo-600'
+            }`}
+          >
+            {copiedForClaude ? <CheckCircle size={16} /> : <Bot size={16} />}
+            {copiedForClaude ? 'Copied!' : 'Copy for Claude'}
+          </button>
+        </div>
+
+        {reviewStatus === 'error' && (
+          <p className="text-xs text-red-500 px-1">
+            Could not reach <span className="font-mono">{WEBHOOK_URL}</span>. Check the MCP server is running.
+          </p>
         )}
-      </button>
+      </div>
 
       {error && (
         <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>
       )}
 
-      {result && (
+      {/* AI Feedback Result */}
+      {feedback && (
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          className="space-y-6"
+          className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4"
         >
-          {/* Essay Card */}
-          <div className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-xl relative">
-            <div className="absolute top-6 right-6">
-              <button
-                onClick={() => result.essay && navigator.clipboard.writeText(result.essay)}
-                className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-slate-100 hover:text-slate-600 transition-all"
-                title="Copy essay"
-              >
-                <Clipboard size={18} />
-              </button>
+          <div className="flex items-center gap-4">
+            <div className="shrink-0 w-16 h-16 rounded-2xl bg-indigo-50 flex flex-col items-center justify-center">
+              <span className="text-3xl font-black text-indigo-600">{feedback.score.pte}</span>
+              <span className="text-[9px] font-bold text-indigo-400 uppercase tracking-wider">/ 5</span>
             </div>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600">
-                <FileText size={20} />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-slate-900">Polished Essay</h3>
-                <div className="flex gap-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                  <span>{result.wordCount} Words</span>
-                  <span>Score: {result.score.pte}/5</span>
-                  <span>Time: {formatTime(timeTakenSnapshot)}</span>
-                </div>
-              </div>
-            </div>
-            <p className="text-slate-700 leading-relaxed whitespace-pre-wrap text-base">{result.essay}</p>
-          </div>
-
-          {/* Notes */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {result.notes.map((note, i) => (
-              <div key={i} className="p-4 bg-indigo-50/50 border border-indigo-100 rounded-2xl text-sm text-indigo-900 italic">
-                {note}
-              </div>
-            ))}
-          </div>
-
-          {/* Review Actions */}
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
             <div>
-              <h3 className="text-sm font-bold text-slate-900">Submit for Review</h3>
-              <p className="text-xs text-slate-400 mt-0.5">Send your essay for official scoring or copy a prompt for Claude.</p>
+              <h3 className="font-bold text-slate-900">AI Feedback</h3>
+              <p className="text-xs text-slate-400">{feedback.wordCount} words analysed · {typeDef.label}</p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <button
-                onClick={handleSendForReview}
-                disabled={sendingReview}
-                className={`flex items-center justify-center gap-2 px-4 py-3 rounded-2xl font-semibold text-sm transition-all shadow-sm disabled:opacity-60 ${
-                  reviewStatus === 'success' ? 'bg-emerald-600 text-white'
-                    : reviewStatus === 'error' ? 'bg-red-600 text-white'
-                    : 'bg-slate-900 text-white hover:bg-slate-700'
-                }`}
-              >
-                {sendingReview ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  : reviewStatus === 'success' ? <CheckCircle size={16} />
-                  : reviewStatus === 'error' ? <XCircle size={16} />
-                  : <Send size={16} />}
-                {sendingReview ? 'Sending…'
-                  : reviewStatus === 'success' ? 'Sent Successfully'
-                  : reviewStatus === 'error' ? 'Failed — Retry'
-                  : 'Send for Official Review'}
-              </button>
-              <button
-                onClick={handleCopyForClaude}
-                className={`flex items-center justify-center gap-2 px-4 py-3 rounded-2xl font-semibold text-sm border transition-all ${
-                  copiedForClaude ? 'bg-indigo-600 text-white border-indigo-600'
-                    : 'bg-white text-slate-700 border-slate-200 hover:border-indigo-400 hover:text-indigo-600'
-                }`}
-              >
-                {copiedForClaude ? <CheckCircle size={16} /> : <Bot size={16} />}
-                {copiedForClaude ? 'Copied to Clipboard!' : 'Copy for Claude'}
-              </button>
-            </div>
-            {reviewStatus === 'error' && (
-              <p className="text-xs text-red-500">
-                Could not reach <span className="font-mono">{WEBHOOK_URL}</span>. Make sure the local MCP server is running.
-              </p>
-            )}
-            <details className="group">
-              <summary className="text-[10px] font-bold text-slate-400 uppercase tracking-widest cursor-pointer hover:text-slate-600 list-none flex items-center gap-1">
-                <span className="group-open:hidden">▶</span><span className="hidden group-open:inline">▼</span> Preview Payload
-              </summary>
-              <pre className="mt-2 p-3 bg-slate-50 border border-slate-100 rounded-xl text-[11px] text-slate-600 font-mono overflow-x-auto whitespace-pre-wrap break-all">
-                {JSON.stringify(buildPayload(), null, 2)}
-              </pre>
-            </details>
           </div>
+          <ul className="space-y-2">
+            {feedback.notes.map((note, i) => (
+              <li key={i} className="flex gap-2 text-sm text-slate-700">
+                <span className="shrink-0 text-indigo-400 font-bold">{i + 1}.</span>
+                {note}
+              </li>
+            ))}
+          </ul>
         </motion.div>
       )}
     </div>
