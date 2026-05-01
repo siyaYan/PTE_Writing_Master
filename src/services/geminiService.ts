@@ -40,11 +40,16 @@ export function getFastFeedback(
 export function generateNormalEssay(
   topic: string,
   desc: string,
-  sentences: string[],
+  paragraphs: string[],
+  essayType: string,
 ): Promise<NormalEssay> {
-  return requestGemini<NormalEssay>('normal-essay', { topic, desc, sentences });
+  return requestGemini<NormalEssay>('normal-essay', { topic, desc, paragraphs, essayType });
 }
 
-export function generateTemplate(mode: string, notes: string): Promise<TemplateResult> {
-  return requestGemini<TemplateResult>('template', { mode, notes });
+export function generateTemplate(
+  topic: string,
+  essayType: string,
+  notes?: string,
+): Promise<TemplateResult> {
+  return requestGemini<TemplateResult>('template', { topic, essayType, notes });
 }

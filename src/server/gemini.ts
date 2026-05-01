@@ -105,26 +105,37 @@ export async function generateFastFeedback({
 export async function generateNormalEssay({
   topic,
   desc,
-  sentences,
+  paragraphs,
+  essayType,
 }: NormalEssayRequest): Promise<NormalEssay> {
   const ai = getClient();
   const response = await ai.models.generateContent({
     model: MODEL,
     contents: `
       Topic: ${topic}
-      Context: ${desc}
-      Topic sentences:
-      1. ${sentences[0]}
-      2. ${sentences[1]}
-      3. ${sentences[2]}
-      4. ${sentences[3]}
-      5. ${sentences[4]}
+      Essay Type: ${essayType}
+      Context / hint: ${desc || 'none'}
+
+      Student's paragraphs:
+
+      INTRODUCTION:
+      ${paragraphs[0] || '(empty)'}
+
+      BODY PARAGRAPH 1:
+      ${paragraphs[1] || '(empty)'}
+
+      BODY PARAGRAPH 2:
+      ${paragraphs[2] || '(empty)'}
+
+      CONCLUSION:
+      ${paragraphs[3] || '(empty)'}
     `,
     config: {
       systemInstruction: `
-        Assemble a PTE Write-Essay (200-300 words) using the five topic sentences.
-        Structure: Intro (paraphrase + thesis) -> Body A -> Body B -> Body C -> Conclusion.
-        Keep word count 200-300. Return JSON.
+        You are a PTE Writing coach. The student has written a ${essayType}-style essay
+        across four paragraphs. Polish these into a cohesive PTE Write-Essay of 200-300 words.
+        Improve sentence variety, cohesion and flow but preserve the student's ideas and
+        sentence structures. Target word count: 220-280. Return JSON.
       `,
       responseMimeType: 'application/json',
       responseSchema: {
@@ -148,20 +159,26 @@ export async function generateNormalEssay({
 }
 
 export async function generateTemplateResult({
-  mode,
+  topic,
+  essayType,
   notes,
 }: TemplateRequest): Promise<TemplateResult> {
   const ai = getClient();
   const response = await ai.models.generateContent({
     model: MODEL,
     contents: `
-      Mode: ${mode}
-      Notes: ${notes}
+      Topic: ${topic || 'a general PTE writing topic'}
+      Essay Type: ${essayType}
+      ${notes ? `Extra instructions: ${notes}` : ''}
     `,
     config: {
       systemInstruction: `
-        Create a robust, reusable PTE Write-Essay template.
-        Return JSON with the template text and usage tips.
+        You are a PTE Writing expert. Generate a complete model ${essayType}-style
+        PTE Write-Essay (220-280 words) about the given topic.
+        Structure: Introduction (3 sentences) → Body 1 (5 sentences) →
+        Body 2 (5 sentences) → Conclusion (2 sentences).
+        Use a mix of simple and complex sentence structures appropriate for PTE.
+        Return JSON with the full essay as "template" and 3-4 practical writing tips as "tips".
       `,
       responseMimeType: 'application/json',
       responseSchema: {

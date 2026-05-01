@@ -97,7 +97,7 @@ export default function App() {
               >
                 {activeTab === 'fast' && <FastPractice topic={topic.title} desc={topic.desc} />}
                 {activeTab === 'normal' && <NormalPractice topic={topic.title} desc={topic.desc} isPredicted={topic.isPredicted} sourceId={topic.sourceId} />}
-                {activeTab === 'template' && <TemplateGenerator />}
+                {activeTab === 'template' && <TemplateGenerator topic={topic.title} />}
               </motion.div>
             </AnimatePresence>
           </div>

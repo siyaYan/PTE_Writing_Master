@@ -36,12 +36,14 @@ export interface FastFeedbackRequest {
 export interface NormalEssayRequest {
   topic: string;
   desc: string;
-  sentences: string[];
+  paragraphs: string[];
+  essayType: string;
 }
 
 export interface TemplateRequest {
-  mode: string;
-  notes: string;
+  topic: string;
+  essayType: string;
+  notes?: string;
 }
 
 export type GeminiAction = 'fast-feedback' | 'normal-essay' | 'template';
