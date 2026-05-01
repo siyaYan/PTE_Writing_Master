@@ -1,0 +1,2158 @@
+{
+  "metadata": {
+    "description": "Combined PTE writing topic list from Firefly available topics and ApeUni predicted topics.",
+    "total_topics": 149,
+    "predicted_topics": 41,
+    "prediction_rule": "Y if the topic is marked predicted in Firefly or semantically matched to an ApeUni predicted topic.",
+    "sources": {
+      "Firefly": {
+        "input_file": "Firefly_PTE_Writing.csv",
+        "available_topics": 149,
+        "marked_predicted": 37
+      },
+      "ApeUni": {
+        "input_file": "APEuni_PTE_writing_predict.csv",
+        "predicted_topics": 40
+      }
+    }
+  },
+  "topics": [
+    {
+      "topic": "Whether laws change people's behaviour",
+      "topic_sentence": "A balanced essay can argue that whether laws change people's behaviour should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101003",
+          "original_title": "法律改变人的行为",
+          "firefly_no": 1
+        },
+        {
+          "source": "ApeUni",
+          "number": "#149",
+          "title": "Law Effect"
+        }
+      ]
+    },
+    {
+      "topic": "Advantages and disadvantages of employee participation in decision-making",
+      "topic_sentence": "A balanced essay can argue that advantages and disadvantages of employee participation in decision-making should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101004",
+          "original_title": "员工参与决策的利弊",
+          "firefly_no": 2
+        },
+        {
+          "source": "ApeUni",
+          "number": "#46",
+          "title": "Worker Decision-Making"
+        }
+      ]
+    },
+    {
+      "topic": "Whether written examinations effectively assess learning outcomes",
+      "topic_sentence": "A balanced essay can argue that whether written examinations effectively assess learning outcomes should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101005",
+          "original_title": "书面考试是否有效评估学习成果",
+          "firefly_no": 3
+        },
+        {
+          "source": "ApeUni",
+          "number": "#17",
+          "title": "Formal Written Examination"
+        }
+      ]
+    },
+    {
+      "topic": "Whether travel is necessary for education",
+      "topic_sentence": "A balanced essay can argue that whether travel is necessary for education should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101006",
+          "original_title": "旅行对于教育的必要性",
+          "firefly_no": 4
+        },
+        {
+          "source": "ApeUni",
+          "number": "#261",
+          "title": "Travel for Education"
+        }
+      ]
+    },
+    {
+      "topic": "Whether tourism brings equal advantages and disadvantages to underdeveloped countries",
+      "topic_sentence": "A balanced essay can argue that whether tourism brings equal advantages and disadvantages to underdeveloped countries should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101007",
+          "original_title": "欠发达国家的旅游业利弊相当",
+          "firefly_no": 5
+        },
+        {
+          "source": "ApeUni",
+          "number": "#156",
+          "title": "Tourism's Pros and Cons"
+        }
+      ]
+    },
+    {
+      "topic": "Advantages and disadvantages of the information revolution caused by mass media",
+      "topic_sentence": "A balanced essay can argue that advantages and disadvantages of the information revolution caused by mass media should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101009",
+          "original_title": "大众传媒引发的信息革命带来的利弊",
+          "firefly_no": 6
+        },
+        {
+          "source": "ApeUni",
+          "number": "#24",
+          "title": "Information Revolution"
+        }
+      ]
+    },
+    {
+      "topic": "How mass media influences society and individuality",
+      "topic_sentence": "A balanced essay can argue that how mass media influences society and individuality should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101010",
+          "original_title": "大众传媒影响社会与个性",
+          "firefly_no": 7
+        },
+        {
+          "source": "ApeUni",
+          "number": "#35",
+          "title": "Mass Media"
+        }
+      ]
+    },
+    {
+      "topic": "The influence of mass media on young people",
+      "topic_sentence": "A balanced essay can argue that the influence of mass media on young people should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101011",
+          "original_title": "大众传媒对年轻人的影响",
+          "firefly_no": 8
+        }
+      ]
+    },
+    {
+      "topic": "Who should be responsible for climate change",
+      "topic_sentence": "A balanced essay can argue that who should be responsible for climate change should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101012",
+          "original_title": "气候变化谁负责",
+          "firefly_no": 9
+        }
+      ]
+    },
+    {
+      "topic": "The functions of television: learning, relaxation, and companionship",
+      "topic_sentence": "A balanced essay can argue that the functions of television: learning, relaxation, and companionship should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101013",
+          "original_title": "电视功能（学习、放松、陪伴）",
+          "firefly_no": 10
+        },
+        {
+          "source": "ApeUni",
+          "number": "#100",
+          "title": "Television"
+        }
+      ]
+    },
+    {
+      "topic": "Whether marketing for daily consumer goods should focus more on brand or discounts",
+      "topic_sentence": "A balanced essay can argue that whether marketing for daily consumer goods should focus more on brand or discounts should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101015",
+          "original_title": "日用消费品的营销应该重品牌还是重优惠",
+          "firefly_no": 11
+        },
+        {
+          "source": "ApeUni",
+          "number": "#195",
+          "title": "Marketing In Companies"
+        }
+      ]
+    },
+    {
+      "topic": "Studying one specific aspect of climate change",
+      "topic_sentence": "A balanced essay can argue that studying one specific aspect of climate change should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101016",
+          "original_title": "研究气候变化的某方面",
+          "firefly_no": 12
+        },
+        {
+          "source": "ApeUni",
+          "number": "#155",
+          "title": "Studying Climate Change"
+        }
+      ]
+    },
+    {
+      "topic": "Advantages and disadvantages of high school students studying plays from a century ago",
+      "topic_sentence": "A balanced essay can argue that advantages and disadvantages of high school students studying plays from a century ago should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101028",
+          "original_title": "高中学习百年前戏剧的利弊",
+          "firefly_no": 13
+        },
+        {
+          "source": "ApeUni",
+          "number": "#77",
+          "title": "Studying Theater"
+        }
+      ]
+    },
+    {
+      "topic": "Large shopping malls replacing small shops",
+      "topic_sentence": "A balanced essay can argue that large shopping malls replacing small shops should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101030",
+          "original_title": "大商场替代小商铺",
+          "firefly_no": 14
+        },
+        {
+          "source": "ApeUni",
+          "number": "#30",
+          "title": "Shopping Malls"
+        }
+      ]
+    },
+    {
+      "topic": "Whether advanced technology extending life expectancy is good or bad",
+      "topic_sentence": "A balanced essay can argue that whether advanced technology extending life expectancy is good or bad should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101039",
+          "original_title": "先进技术延长人们寿命是好是坏",
+          "firefly_no": 15
+        },
+        {
+          "source": "ApeUni",
+          "number": "#71",
+          "title": "Extending Life Expectancy"
+        }
+      ]
+    },
+    {
+      "topic": "Whether experiential learning benefits schools",
+      "topic_sentence": "A balanced essay can argue that whether experiential learning benefits schools should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101040",
+          "original_title": "体验式学习在学校有无好处",
+          "firefly_no": 16
+        },
+        {
+          "source": "ApeUni",
+          "number": "#56",
+          "title": "Experiential Learning"
+        }
+      ]
+    },
+    {
+      "topic": "Whether parents should be legally responsible for their children's behaviour",
+      "topic_sentence": "A balanced essay can argue that whether parents should be legally responsible for their children's behaviour should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101042",
+          "original_title": "家长需要为孩子的行为负法律责任吗",
+          "firefly_no": 17
+        },
+        {
+          "source": "ApeUni",
+          "number": "#43",
+          "title": "Legal Responsibility"
+        }
+      ]
+    },
+    {
+      "topic": "Whether schools should deduct marks for late assignments",
+      "topic_sentence": "A balanced essay can argue that whether schools should deduct marks for late assignments should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101043",
+          "original_title": "学校扣迟交作业学生的分数",
+          "firefly_no": 18
+        },
+        {
+          "source": "ApeUni",
+          "number": "#63",
+          "title": "Mark Deduction"
+        }
+      ]
+    },
+    {
+      "topic": "Balancing work and study",
+      "topic_sentence": "A balanced essay can argue that balancing work and study should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101044",
+          "original_title": "兼顾工作和学习",
+          "firefly_no": 19
+        },
+        {
+          "source": "ApeUni",
+          "number": "#39",
+          "title": "Right Balance"
+        }
+      ]
+    },
+    {
+      "topic": "The most serious problem facing governments",
+      "topic_sentence": "A balanced essay can argue that the most serious problem facing governments should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101055",
+          "original_title": "政府面临的最严重的问题是什么",
+          "firefly_no": 20
+        },
+        {
+          "source": "ApeUni",
+          "number": "#76",
+          "title": "Facing Issues"
+        }
+      ]
+    },
+    {
+      "topic": "How building design affects work and life",
+      "topic_sentence": "A balanced essay can argue that how building design affects work and life should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101056",
+          "original_title": "建筑设计对工作生活的影响",
+          "firefly_no": 21
+        },
+        {
+          "source": "ApeUni",
+          "number": "#72",
+          "title": "Building Effects"
+        }
+      ]
+    },
+    {
+      "topic": "City life versus countryside life",
+      "topic_sentence": "A balanced essay can argue that city life versus countryside life should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101062",
+          "original_title": "城市生活与乡村生活，你喜欢哪个？",
+          "firefly_no": 22
+        },
+        {
+          "source": "ApeUni",
+          "number": "#183",
+          "title": "City or Countryside"
+        }
+      ]
+    },
+    {
+      "topic": "Whether life experience is a better teacher than books and formal education",
+      "topic_sentence": "A balanced essay can argue that whether life experience is a better teacher than books and formal education should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101122",
+          "original_title": "与书本，正统教育相比，人生经历经验是更好的老师？",
+          "firefly_no": 23
+        },
+        {
+          "source": "ApeUni",
+          "number": "#102",
+          "title": "Life Experience"
+        }
+      ]
+    },
+    {
+      "topic": "Advantages and disadvantages of universities replacing printed books with digital media",
+      "topic_sentence": "A balanced essay can argue that advantages and disadvantages of universities replacing printed books with digital media should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101123",
+          "original_title": "大学购买数码媒体取代纸质书的利弊",
+          "firefly_no": 24
+        },
+        {
+          "source": "ApeUni",
+          "number": "#86",
+          "title": "Digital Materials"
+        }
+      ]
+    },
+    {
+      "topic": "Whether governments should improve public transport or build more roads",
+      "topic_sentence": "A balanced essay can argue that whether governments should improve public transport or build more roads should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101124",
+          "original_title": "政府应该改善公共交通还是多修路",
+          "firefly_no": 25
+        },
+        {
+          "source": "ApeUni",
+          "number": "#5",
+          "title": "Transportation Networks"
+        },
+        {
+          "source": "ApeUni",
+          "number": "#116",
+          "title": "Public Transportation"
+        }
+      ]
+    },
+    {
+      "topic": "Balancing work and private life: prevalence and consequences",
+      "topic_sentence": "A balanced essay can argue that balancing work and private life: prevalence and consequences should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101126",
+          "original_title": "兼顾工作和私人生活（普遍性与后果）",
+          "firefly_no": 26
+        },
+        {
+          "source": "ApeUni",
+          "number": "#75",
+          "title": "Personal Life"
+        }
+      ]
+    },
+    {
+      "topic": "Balancing work and private life: importance and causes",
+      "topic_sentence": "A balanced essay can argue that balancing work and private life: importance and causes should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101127",
+          "original_title": "兼顾工作与私人生活（重要性与成因）",
+          "firefly_no": 27
+        },
+        {
+          "source": "ApeUni",
+          "number": "#40",
+          "title": "Personal Life"
+        }
+      ]
+    },
+    {
+      "topic": "A new invention and its advantages or disadvantages",
+      "topic_sentence": "A balanced essay can argue that a new invention and its advantages or disadvantages should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101128",
+          "original_title": "描述一个新发明及其优点或缺点",
+          "firefly_no": 28
+        },
+        {
+          "source": "ApeUni",
+          "number": "#159",
+          "title": "Inventions"
+        }
+      ]
+    },
+    {
+      "topic": "Reducing working hours to ease unemployment",
+      "topic_sentence": "A balanced essay can argue that reducing working hours to ease unemployment should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101132",
+          "original_title": "减少工时以缓解失业率",
+          "firefly_no": 29
+        },
+        {
+          "source": "ApeUni",
+          "number": "#166",
+          "title": "Short Weeks"
+        }
+      ]
+    },
+    {
+      "topic": "Whether celebrities should give up their privacy",
+      "topic_sentence": "A balanced essay can argue that whether celebrities should give up their privacy should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101134",
+          "original_title": "名人是否要放弃隐私",
+          "firefly_no": 30
+        },
+        {
+          "source": "ApeUni",
+          "number": "#163",
+          "title": "Celebrities' Privacy"
+        }
+      ]
+    },
+    {
+      "topic": "Whether people will work fewer hours in the future",
+      "topic_sentence": "A balanced essay can argue that whether people will work fewer hours in the future should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101135",
+          "original_title": "未来人们工时会减少",
+          "firefly_no": 31
+        },
+        {
+          "source": "ApeUni",
+          "number": "#162",
+          "title": "Fewer Work Hours"
+        }
+      ]
+    },
+    {
+      "topic": "Age limits in society",
+      "topic_sentence": "A balanced essay can argue that age limits in society should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101136",
+          "original_title": "年龄限制",
+          "firefly_no": 32
+        },
+        {
+          "source": "ApeUni",
+          "number": "#90",
+          "title": "Age Limit"
+        }
+      ]
+    },
+    {
+      "topic": "Whether foreign languages should be compulsory subjects",
+      "topic_sentence": "A balanced essay can argue that whether foreign languages should be compulsory subjects should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101137",
+          "original_title": "外语应该成为必修课吗",
+          "firefly_no": 33
+        },
+        {
+          "source": "ApeUni",
+          "number": "#170",
+          "title": "Compulsory Learning"
+        }
+      ]
+    },
+    {
+      "topic": "Whether governments should spend money restoring old buildings rather than building modern housing",
+      "topic_sentence": "A balanced essay can argue that whether governments should spend money restoring old buildings rather than building modern housing should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101138",
+          "original_title": "国家把钱花在建筑修复，而非现代住房",
+          "firefly_no": 34
+        },
+        {
+          "source": "ApeUni",
+          "number": "#171",
+          "title": "Old or Modern Buildings"
+        }
+      ]
+    },
+    {
+      "topic": "Whether life is becoming harder for children in the twenty-first century",
+      "topic_sentence": "A balanced essay can argue that whether life is becoming harder for children in the twenty-first century should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101139",
+          "original_title": "21世纪的孩子越来越难",
+          "firefly_no": 35
+        },
+        {
+          "source": "ApeUni",
+          "number": "#173",
+          "title": "Harder Life"
+        }
+      ]
+    },
+    {
+      "topic": "Whether there should be a maximum wage limit",
+      "topic_sentence": "A balanced essay can argue that whether there should be a maximum wage limit should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101140",
+          "original_title": "要不要限定最高薪资",
+          "firefly_no": 36
+        },
+        {
+          "source": "ApeUni",
+          "number": "#174",
+          "title": "Wage Cap"
+        }
+      ]
+    },
+    {
+      "topic": "Whether people still need to learn foreign languages when AI translation exists",
+      "topic_sentence": "A balanced essay can argue that whether people still need to learn foreign languages when AI translation exists should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101143",
+          "original_title": "既然有人工智能翻译，还需要学外语吗？",
+          "firefly_no": 37
+        },
+        {
+          "source": "ApeUni",
+          "number": "#184",
+          "title": "Foreign Languages"
+        }
+      ]
+    },
+    {
+      "topic": "Getting married before graduation or work",
+      "topic_sentence": "A balanced essay can argue that getting married before graduation or work should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101001",
+          "original_title": "毕业或工作前就结婚",
+          "firefly_no": 38
+        }
+      ]
+    },
+    {
+      "topic": "Whether the growing environment influences personal achievement",
+      "topic_sentence": "A balanced essay can argue that whether the growing environment influences personal achievement should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101002",
+          "original_title": "成长环境是否影响个人成就",
+          "firefly_no": 39
+        }
+      ]
+    },
+    {
+      "topic": "Extreme sports",
+      "topic_sentence": "A balanced essay can argue that extreme sports should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101008",
+          "original_title": "极限运动",
+          "firefly_no": 40
+        }
+      ]
+    },
+    {
+      "topic": "The most important invention in the past 100 years",
+      "topic_sentence": "A balanced essay can argue that the most important invention in the past 100 years should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101014",
+          "original_title": "100年内最重要的发明",
+          "firefly_no": 41
+        }
+      ]
+    },
+    {
+      "topic": "Celebrities as role models for young people",
+      "topic_sentence": "A balanced essay can argue that celebrities as role models for young people should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101017",
+          "original_title": "明星是年轻人的偶像",
+          "firefly_no": 42
+        }
+      ]
+    },
+    {
+      "topic": "Whether living in cities is good",
+      "topic_sentence": "A balanced essay can argue that whether living in cities is good should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101018",
+          "original_title": "住在城市好不好",
+          "firefly_no": 43
+        }
+      ]
+    },
+    {
+      "topic": "Competition at school",
+      "topic_sentence": "A balanced essay can argue that competition at school should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101019",
+          "original_title": "学校竞争",
+          "firefly_no": 44
+        }
+      ]
+    },
+    {
+      "topic": "How lifestyle affects health",
+      "topic_sentence": "A balanced essay can argue that how lifestyle affects health should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101020",
+          "original_title": "生活方式影响健康",
+          "firefly_no": 45
+        }
+      ]
+    },
+    {
+      "topic": "Whether private car use should be restricted",
+      "topic_sentence": "A balanced essay can argue that whether private car use should be restricted should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101021",
+          "original_title": "应不应该限制私家车的使用",
+          "firefly_no": 46
+        }
+      ]
+    },
+    {
+      "topic": "Whether public funds should be spent on environmental problems or space travel",
+      "topic_sentence": "A balanced essay can argue that whether public funds should be spent on environmental problems or space travel should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101022",
+          "original_title": "公众资金应放在环境问题上还是太空旅行上",
+          "firefly_no": 47
+        }
+      ]
+    },
+    {
+      "topic": "Preserving historic buildings",
+      "topic_sentence": "A balanced essay can argue that preserving historic buildings should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101023",
+          "original_title": "维护过去的建筑",
+          "firefly_no": 48
+        }
+      ]
+    },
+    {
+      "topic": "Learning from experts",
+      "topic_sentence": "A balanced essay can argue that learning from experts should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101024",
+          "original_title": "学专家的内容",
+          "firefly_no": 49
+        }
+      ]
+    },
+    {
+      "topic": "Whether obstacles to learning are part of education",
+      "topic_sentence": "A balanced essay can argue that whether obstacles to learning are part of education should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101025",
+          "original_title": "阻碍学习的事物就是教育",
+          "firefly_no": 50
+        }
+      ]
+    },
+    {
+      "topic": "Compulsory voting",
+      "topic_sentence": "A balanced essay can argue that compulsory voting should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101026",
+          "original_title": "强制性投票",
+          "firefly_no": 51
+        }
+      ]
+    },
+    {
+      "topic": "Learning a new language at an early age",
+      "topic_sentence": "A balanced essay can argue that learning a new language at an early age should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101027",
+          "original_title": "幼龄时学习新语言",
+          "firefly_no": 52
+        }
+      ]
+    },
+    {
+      "topic": "Changes in the media",
+      "topic_sentence": "A balanced essay can argue that changes in the media should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101029",
+          "original_title": "传媒的变化",
+          "firefly_no": 53
+        }
+      ]
+    },
+    {
+      "topic": "Causes and solutions of waste",
+      "topic_sentence": "A balanced essay can argue that causes and solutions of waste should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101031",
+          "original_title": "垃圾的原因和解决方案",
+          "firefly_no": 54
+        }
+      ]
+    },
+    {
+      "topic": "Advantages and disadvantages of the digital age",
+      "topic_sentence": "A balanced essay can argue that advantages and disadvantages of the digital age should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101032",
+          "original_title": "数码时代的优点缺点",
+          "firefly_no": 55
+        }
+      ]
+    },
+    {
+      "topic": "Whether online information should be paid for",
+      "topic_sentence": "A balanced essay can argue that whether online information should be paid for should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101033",
+          "original_title": "网上信息是否应该付费",
+          "firefly_no": 56
+        }
+      ]
+    },
+    {
+      "topic": "Whether teenagers should take financial literacy courses",
+      "topic_sentence": "A balanced essay can argue that whether teenagers should take financial literacy courses should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101034",
+          "original_title": "青少年需不需要上理财课程",
+          "firefly_no": 57
+        }
+      ]
+    },
+    {
+      "topic": "Whether children can learn from films as importantly as from literature",
+      "topic_sentence": "A balanced essay can argue that whether children can learn from films as importantly as from literature should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101035",
+          "original_title": "孩子用电影和文学学习一样重要",
+          "firefly_no": 58
+        }
+      ]
+    },
+    {
+      "topic": "Whether students should focus on learning rather than exams",
+      "topic_sentence": "A balanced essay can argue that whether students should focus on learning rather than exams should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101036",
+          "original_title": "学生应该学习，而不是考试",
+          "firefly_no": 59
+        }
+      ]
+    },
+    {
+      "topic": "Whether creativity is innate or learned",
+      "topic_sentence": "A balanced essay can argue that whether creativity is innate or learned should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101037",
+          "original_title": "创造力是天生的还是后天的",
+          "firefly_no": 60
+        }
+      ]
+    },
+    {
+      "topic": "Whether a cashless society is realistic and its advantages and disadvantages",
+      "topic_sentence": "A balanced essay can argue that whether a cashless society is realistic and its advantages and disadvantages should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101038",
+          "original_title": "无现金社会是否现实？优缺点？",
+          "firefly_no": 61
+        }
+      ]
+    },
+    {
+      "topic": "Whether science is more important than arts",
+      "topic_sentence": "A balanced essay can argue that whether science is more important than arts should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101041",
+          "original_title": "理科比文科更重要",
+          "firefly_no": 62
+        }
+      ]
+    },
+    {
+      "topic": "Whether learning morals and values is as important as practical skills",
+      "topic_sentence": "A balanced essay can argue that whether learning morals and values is as important as practical skills should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101045",
+          "original_title": "学习道德和价值观和对于实际操作能力一样重要吗",
+          "firefly_no": 63
+        }
+      ]
+    },
+    {
+      "topic": "Whether airplanes or cars have a greater impact on people's lives",
+      "topic_sentence": "A balanced essay can argue that whether airplanes or cars have a greater impact on people's lives should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101046",
+          "original_title": "飞机和汽车哪个更影响人们的生活",
+          "firefly_no": 64
+        }
+      ]
+    },
+    {
+      "topic": "Whether music helps learning",
+      "topic_sentence": "A balanced essay can argue that whether music helps learning should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101047",
+          "original_title": "音乐帮助学习吗",
+          "firefly_no": 65
+        }
+      ]
+    },
+    {
+      "topic": "Views on high school students performing drama",
+      "topic_sentence": "A balanced essay can argue that views on high school students performing drama should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101048",
+          "original_title": "怎么看待高中生表演戏剧",
+          "firefly_no": 66
+        },
+        {
+          "source": "ApeUni",
+          "number": "#58",
+          "title": "Play Writing"
+        }
+      ]
+    },
+    {
+      "topic": "Advantages and disadvantages of migrating overseas",
+      "topic_sentence": "A balanced essay can argue that advantages and disadvantages of migrating overseas should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101049",
+          "original_title": "移民海外的优点和缺点",
+          "firefly_no": 67
+        },
+        {
+          "source": "ApeUni",
+          "number": "#124",
+          "title": "Studying Abroad"
+        }
+      ]
+    },
+    {
+      "topic": "Whether a healthy diet is more important than exercise",
+      "topic_sentence": "A balanced essay can argue that whether a healthy diet is more important than exercise should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101050",
+          "original_title": "健康饮食比锻炼更重要？",
+          "firefly_no": 68
+        }
+      ]
+    },
+    {
+      "topic": "Advantages and disadvantages of part-time work for students",
+      "topic_sentence": "A balanced essay can argue that advantages and disadvantages of part-time work for students should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101051",
+          "original_title": "学生兼职打工的优点缺点",
+          "firefly_no": 69
+        }
+      ]
+    },
+    {
+      "topic": "Which learning resources are the most reliable",
+      "topic_sentence": "A balanced essay can argue that which learning resources are the most reliable should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101052",
+          "original_title": "哪种学习资源最靠谱",
+          "firefly_no": 70
+        },
+        {
+          "source": "ApeUni",
+          "number": "#106",
+          "title": "Effective Study"
+        }
+      ]
+    },
+    {
+      "topic": "Advantages and disadvantages of advertising",
+      "topic_sentence": "A balanced essay can argue that advantages and disadvantages of advertising should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101053",
+          "original_title": "广告的优点缺点",
+          "firefly_no": 71
+        }
+      ]
+    },
+    {
+      "topic": "The importance of parental education",
+      "topic_sentence": "A balanced essay can argue that the importance of parental education should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101054",
+          "original_title": "父母教育重不重要",
+          "firefly_no": 72
+        }
+      ]
+    },
+    {
+      "topic": "Whether schools should group students by ability",
+      "topic_sentence": "A balanced essay can argue that whether schools should group students by ability should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101057",
+          "original_title": "学校是否应该按照学生能力分组教学？",
+          "firefly_no": 73
+        }
+      ]
+    },
+    {
+      "topic": "Whether university students should pay full tuition fees",
+      "topic_sentence": "A balanced essay can argue that whether university students should pay full tuition fees should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101058",
+          "original_title": "大学生应该支付全额学费",
+          "firefly_no": 74
+        }
+      ]
+    },
+    {
+      "topic": "Whether governments should invest more in education or healthcare",
+      "topic_sentence": "A balanced essay can argue that whether governments should invest more in education or healthcare should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101059",
+          "original_title": "教育和医疗，哪一个更值得政府投入更多资金",
+          "firefly_no": 75
+        }
+      ]
+    },
+    {
+      "topic": "Main causes and consequences of low birth rates and population ageing",
+      "topic_sentence": "A balanced essay can argue that main causes and consequences of low birth rates and population ageing should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101060",
+          "original_title": "低生育率和老龄化现象的主因和后果",
+          "firefly_no": 76
+        }
+      ]
+    },
+    {
+      "topic": "Centralised examinations versus continuous assessment",
+      "topic_sentence": "A balanced essay can argue that centralised examinations versus continuous assessment should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101061",
+          "original_title": "集中考试和不停考试哪个好",
+          "firefly_no": 77
+        }
+      ]
+    },
+    {
+      "topic": "Whether online communication between doctors and patients is beneficial",
+      "topic_sentence": "A balanced essay can argue that whether online communication between doctors and patients is beneficial should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101063",
+          "original_title": "医生网络沟通好不好",
+          "firefly_no": 78
+        }
+      ]
+    },
+    {
+      "topic": "University degrees in popular music",
+      "topic_sentence": "A balanced essay can argue that university degrees in popular music should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101064",
+          "original_title": "流行音乐的大学学位",
+          "firefly_no": 79
+        }
+      ]
+    },
+    {
+      "topic": "Advantages and costs of cheap public transport",
+      "topic_sentence": "A balanced essay can argue that advantages and costs of cheap public transport should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101065",
+          "original_title": "平价公交的优点及其代价",
+          "firefly_no": 80
+        }
+      ]
+    },
+    {
+      "topic": "Whether arts and culture should be funded by the government",
+      "topic_sentence": "A balanced essay can argue that whether arts and culture should be funded by the government should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101066",
+          "original_title": "艺术文化是否该由政府资助",
+          "firefly_no": 81
+        }
+      ]
+    },
+    {
+      "topic": "National happiness index",
+      "topic_sentence": "A balanced essay can argue that national happiness index should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101067",
+          "original_title": "国民幸福指数",
+          "firefly_no": 82
+        }
+      ]
+    },
+    {
+      "topic": "The education system in your country",
+      "topic_sentence": "A balanced essay can argue that the education system in your country should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101068",
+          "original_title": "你国家的教育系统",
+          "firefly_no": 83
+        }
+      ]
+    },
+    {
+      "topic": "Globalisation and foreign languages",
+      "topic_sentence": "A balanced essay can argue that globalisation and foreign languages should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101069",
+          "original_title": "全球化与外语",
+          "firefly_no": 84
+        }
+      ]
+    },
+    {
+      "topic": "Rich countries helping poor countries",
+      "topic_sentence": "A balanced essay can argue that rich countries helping poor countries should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101070",
+          "original_title": "富国帮穷国",
+          "firefly_no": 85
+        }
+      ]
+    },
+    {
+      "topic": "Free university tuition",
+      "topic_sentence": "A balanced essay can argue that free university tuition should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101071",
+          "original_title": "大学学费免费",
+          "firefly_no": 86
+        }
+      ]
+    },
+    {
+      "topic": "Whether schools should teach typing or handwriting",
+      "topic_sentence": "A balanced essay can argue that whether schools should teach typing or handwriting should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101072",
+          "original_title": "学校应该教打字还是手写",
+          "firefly_no": 87
+        }
+      ]
+    },
+    {
+      "topic": "Working or studying versus travelling and volunteering",
+      "topic_sentence": "A balanced essay can argue that working or studying versus travelling and volunteering should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101073",
+          "original_title": "工作学习还是旅游做志愿者",
+          "firefly_no": 88
+        }
+      ]
+    },
+    {
+      "topic": "Whether journalism is the most difficult job",
+      "topic_sentence": "A balanced essay can argue that whether journalism is the most difficult job should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101074",
+          "original_title": "记者是最艰难的工作",
+          "firefly_no": 89
+        }
+      ]
+    },
+    {
+      "topic": "Online communication between doctors and patients",
+      "topic_sentence": "A balanced essay can argue that online communication between doctors and patients should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101075",
+          "original_title": "医生病人用网络沟通",
+          "firefly_no": 90
+        }
+      ]
+    },
+    {
+      "topic": "University degrees in popular culture",
+      "topic_sentence": "A balanced essay can argue that university degrees in popular culture should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101076",
+          "original_title": "流行文化的大学学位",
+          "firefly_no": 91
+        }
+      ]
+    },
+    {
+      "topic": "Whether literature is a waste of time",
+      "topic_sentence": "A balanced essay can argue that whether literature is a waste of time should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101077",
+          "original_title": "文学是浪费时间",
+          "firefly_no": 92
+        }
+      ]
+    },
+    {
+      "topic": "Whether media separates people from real life",
+      "topic_sentence": "A balanced essay can argue that whether media separates people from real life should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101078",
+          "original_title": "媒体让人隔绝真实生活",
+          "firefly_no": 93
+        }
+      ]
+    },
+    {
+      "topic": "The global spread of English",
+      "topic_sentence": "A balanced essay can argue that the global spread of English should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101079",
+          "original_title": "英语全世界普及",
+          "firefly_no": 94
+        }
+      ]
+    },
+    {
+      "topic": "Whether businesses can help solve environmental problems",
+      "topic_sentence": "A balanced essay can argue that whether businesses can help solve environmental problems should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101080",
+          "original_title": "商业企业帮助解决环境问题",
+          "firefly_no": 95
+        }
+      ]
+    },
+    {
+      "topic": "Listeners and speakers",
+      "topic_sentence": "A balanced essay can argue that listeners and speakers should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101081",
+          "original_title": "聆听者与倾诉者",
+          "firefly_no": 96
+        }
+      ]
+    },
+    {
+      "topic": "Choosing a job for work itself or personal interest",
+      "topic_sentence": "A balanced essay can argue that choosing a job for work itself or personal interest should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101082",
+          "original_title": "选工作为工作还是兴趣",
+          "firefly_no": 97
+        }
+      ]
+    },
+    {
+      "topic": "Advantages and disadvantages of using mobile phones",
+      "topic_sentence": "A balanced essay can argue that advantages and disadvantages of using mobile phones should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101083",
+          "original_title": "使用手机的优缺点",
+          "firefly_no": 98
+        }
+      ]
+    },
+    {
+      "topic": "Whether examinations should be replaced",
+      "topic_sentence": "A balanced essay can argue that whether examinations should be replaced should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101084",
+          "original_title": "考试应该被替换",
+          "firefly_no": 99
+        }
+      ]
+    },
+    {
+      "topic": "Whether young people should be allowed to drive and vote only after age 25",
+      "topic_sentence": "A balanced essay can argue that whether young people should be allowed to drive and vote only after age 25 should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101085",
+          "original_title": "年轻人25岁后才准开车投票",
+          "firefly_no": 100
+        }
+      ]
+    },
+    {
+      "topic": "Controlling city population through planning or policy",
+      "topic_sentence": "A balanced essay can argue that controlling city population through planning or policy should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101086",
+          "original_title": "控制城市人口 靠规划还是政策",
+          "firefly_no": 101
+        }
+      ]
+    },
+    {
+      "topic": "Whether the internet makes young people avoid face-to-face communication",
+      "topic_sentence": "A balanced essay can argue that whether the internet makes young people avoid face-to-face communication should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101087",
+          "original_title": "网络让年轻人远离人际沟通",
+          "firefly_no": 102
+        }
+      ]
+    },
+    {
+      "topic": "Participating in individual sports or team sports",
+      "topic_sentence": "A balanced essay can argue that participating in individual sports or team sports should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101088",
+          "original_title": "参加个人或团体运动",
+          "firefly_no": 103
+        }
+      ]
+    },
+    {
+      "topic": "Whether men and women are suited to different careers",
+      "topic_sentence": "A balanced essay can argue that whether men and women are suited to different careers should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101089",
+          "original_title": "男女适合不同的职业",
+          "firefly_no": 104
+        }
+      ]
+    },
+    {
+      "topic": "Causes and solutions of rising temperatures",
+      "topic_sentence": "A balanced essay can argue that causes and solutions of rising temperatures should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101090",
+          "original_title": "气温升高的起因和解决方案",
+          "firefly_no": 105
+        }
+      ]
+    },
+    {
+      "topic": "Whether schools focus too much on exams rather than education",
+      "topic_sentence": "A balanced essay can argue that whether schools focus too much on exams rather than education should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101091",
+          "original_title": "学校注重考试而非教育",
+          "firefly_no": 106
+        }
+      ]
+    },
+    {
+      "topic": "Whether business organisations should help solve global problems",
+      "topic_sentence": "A balanced essay can argue that whether business organisations should help solve global problems should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "Y",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101092",
+          "original_title": "商业组织应该帮助解决全球问题",
+          "firefly_no": 107
+        },
+        {
+          "source": "ApeUni",
+          "number": "#9",
+          "title": "Global Issue"
+        }
+      ]
+    },
+    {
+      "topic": "Whether society, university, or degrees matter more",
+      "topic_sentence": "A balanced essay can argue that whether society, university, or degrees matter more should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101093",
+          "original_title": "社会大学和学位哪个重要",
+          "firefly_no": 108
+        }
+      ]
+    },
+    {
+      "topic": "Solutions to overcrowded urban space",
+      "topic_sentence": "A balanced essay can argue that solutions to overcrowded urban space should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101094",
+          "original_title": "城市空间拥挤，有何良策",
+          "firefly_no": 109
+        }
+      ]
+    },
+    {
+      "topic": "Whether high school graduates should work or attend university",
+      "topic_sentence": "A balanced essay can argue that whether high school graduates should work or attend university should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101095",
+          "original_title": "高中毕业后该找工作还是读大学",
+          "firefly_no": 110
+        }
+      ]
+    },
+    {
+      "topic": "Whether technology makes life more interesting",
+      "topic_sentence": "A balanced essay can argue that whether technology makes life more interesting should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101096",
+          "original_title": "科技让生活更有趣",
+          "firefly_no": 111
+        }
+      ]
+    },
+    {
+      "topic": "Lazy news reporting as a common problem",
+      "topic_sentence": "A balanced essay can argue that lazy news reporting as a common problem should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101097",
+          "original_title": "懒惰的新闻报道已成为家常便饭",
+          "firefly_no": 112
+        }
+      ]
+    },
+    {
+      "topic": "Whether governments should avoid promising continuous economic growth",
+      "topic_sentence": "A balanced essay can argue that whether governments should avoid promising continuous economic growth should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101098",
+          "original_title": "政府不应该承诺经济持续增长",
+          "firefly_no": 113
+        }
+      ]
+    },
+    {
+      "topic": "Whether human activity causes rising temperatures",
+      "topic_sentence": "A balanced essay can argue that whether human activity causes rising temperatures should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101099",
+          "original_title": "人类活动导致气温上升",
+          "firefly_no": 114
+        }
+      ]
+    },
+    {
+      "topic": "Whether nature or nurture has a stronger influence on personality and behaviour",
+      "topic_sentence": "A balanced essay can argue that whether nature or nurture has a stronger influence on personality and behaviour should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101100",
+          "original_title": "先天因素和后天因素哪个更加影响人们的性格和行为",
+          "firefly_no": 115
+        }
+      ]
+    },
+    {
+      "topic": "Whether students should be allowed to choose whether to attend classes",
+      "topic_sentence": "A balanced essay can argue that whether students should be allowed to choose whether to attend classes should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101101",
+          "original_title": "学生能不能自己选择去不去上课",
+          "firefly_no": 116
+        }
+      ]
+    },
+    {
+      "topic": "Whether new employees have more skills and knowledge than older employees",
+      "topic_sentence": "A balanced essay can argue that whether new employees have more skills and knowledge than older employees should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101102",
+          "original_title": "新员工比老员工更有技能知识",
+          "firefly_no": 117
+        }
+      ]
+    },
+    {
+      "topic": "Advantages and disadvantages of studying near or far from home",
+      "topic_sentence": "A balanced essay can argue that advantages and disadvantages of studying near or far from home should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101103",
+          "original_title": "大学离家近和远的优缺点",
+          "firefly_no": 118
+        }
+      ]
+    },
+    {
+      "topic": "Schools replacing books with computers",
+      "topic_sentence": "A balanced essay can argue that schools replacing books with computers should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101104",
+          "original_title": "学校用电脑代替书本",
+          "firefly_no": 119
+        }
+      ]
+    },
+    {
+      "topic": "Whether everyone must learn a foreign language",
+      "topic_sentence": "A balanced essay can argue that whether everyone must learn a foreign language should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101105",
+          "original_title": "每个人都必须学一门外语吗",
+          "firefly_no": 120
+        }
+      ]
+    },
+    {
+      "topic": "Who benefits most from globalisation",
+      "topic_sentence": "A balanced essay can argue that who benefits most from globalisation should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101106",
+          "original_title": "全球化谁最受益",
+          "firefly_no": 121
+        }
+      ]
+    },
+    {
+      "topic": "Whether life experience or a good degree is more helpful for employment",
+      "topic_sentence": "A balanced essay can argue that whether life experience or a good degree is more helpful for employment should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101107",
+          "original_title": "生活经验和好学历哪个对找工作更有帮助",
+          "firefly_no": 122
+        }
+      ]
+    },
+    {
+      "topic": "Whether countries should host major sports events",
+      "topic_sentence": "A balanced essay can argue that whether countries should host major sports events should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101108",
+          "original_title": "应不应该举办大型赛事",
+          "firefly_no": 123
+        }
+      ]
+    },
+    {
+      "topic": "Whether personality determines personal life",
+      "topic_sentence": "A balanced essay can argue that whether personality determines personal life should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101109",
+          "original_title": "性格是不是决定个人生活",
+          "firefly_no": 124
+        }
+      ]
+    },
+    {
+      "topic": "Whether job seekers should value salary or working conditions more",
+      "topic_sentence": "A balanced essay can argue that whether job seekers should value salary or working conditions more should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101110",
+          "original_title": "找工作应该更看中薪水还是工作条件",
+          "firefly_no": 125
+        }
+      ]
+    },
+    {
+      "topic": "The importance of extracurricular activities for school and university students",
+      "topic_sentence": "A balanced essay can argue that the importance of extracurricular activities for school and university students should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101111",
+          "original_title": "课外活动对中小学生和大学生都很重要",
+          "firefly_no": 126
+        }
+      ]
+    },
+    {
+      "topic": "Advantages and disadvantages of public transport in your country",
+      "topic_sentence": "A balanced essay can argue that advantages and disadvantages of public transport in your country should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101112",
+          "original_title": "你国家的公共交通的优缺点",
+          "firefly_no": 127
+        }
+      ]
+    },
+    {
+      "topic": "Whether prisons should punish criminals",
+      "topic_sentence": "A balanced essay can argue that whether prisons should punish criminals should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101113",
+          "original_title": "监狱应不应该惩戒犯罪",
+          "firefly_no": 128
+        }
+      ]
+    },
+    {
+      "topic": "Whether fuel prices should be increased",
+      "topic_sentence": "A balanced essay can argue that whether fuel prices should be increased should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101114",
+          "original_title": "同不同意增加燃料的价格",
+          "firefly_no": 129
+        }
+      ]
+    },
+    {
+      "topic": "Profit maximisation in business",
+      "topic_sentence": "A balanced essay can argue that profit maximisation in business should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101115",
+          "original_title": "企业利益最大化",
+          "firefly_no": 130
+        }
+      ]
+    },
+    {
+      "topic": "Whether university education is necessary for career success",
+      "topic_sentence": "A balanced essay can argue that whether university education is necessary for career success should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101116",
+          "original_title": "大学教育是职业成功的必要条件",
+          "firefly_no": 131
+        }
+      ]
+    },
+    {
+      "topic": "Whether children should attend tutoring or play after school",
+      "topic_sentence": "A balanced essay can argue that whether children should attend tutoring or play after school should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101117",
+          "original_title": "孩子放学后补习还是玩耍",
+          "firefly_no": 132
+        }
+      ]
+    },
+    {
+      "topic": "Whether campus life and experience matter more than a diploma in the job market",
+      "topic_sentence": "A balanced essay can argue that whether campus life and experience matter more than a diploma in the job market should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101118",
+          "original_title": "对于求职市场来说，校园生活/校园经历比一纸文凭更重要？",
+          "firefly_no": 133
+        }
+      ]
+    },
+    {
+      "topic": "Whether athletes should receive higher salaries",
+      "topic_sentence": "A balanced essay can argue that whether athletes should receive higher salaries should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101119",
+          "original_title": "运动员应该有更高薪水",
+          "firefly_no": 134
+        }
+      ]
+    },
+    {
+      "topic": "Advantages and disadvantages of the bus system in your country",
+      "topic_sentence": "A balanced essay can argue that advantages and disadvantages of the bus system in your country should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101120",
+          "original_title": "你国家的公交系统优缺点",
+          "firefly_no": 135
+        }
+      ]
+    },
+    {
+      "topic": "Whether university education is necessary in today's world",
+      "topic_sentence": "A balanced essay can argue that whether university education is necessary in today's world should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101121",
+          "original_title": "大学教育在现今世界中是不是必需的？",
+          "firefly_no": 136
+        }
+      ]
+    },
+    {
+      "topic": "Whether teachers and nurses should receive higher salaries",
+      "topic_sentence": "A balanced essay can argue that whether teachers and nurses should receive higher salaries should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101125",
+          "original_title": "教师护士应该有更高的薪水",
+          "firefly_no": 137
+        }
+      ]
+    },
+    {
+      "topic": "The influence of growing environment on people, using celebrities as examples",
+      "topic_sentence": "A balanced essay can argue that the influence of growing environment on people, using celebrities as examples should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101129",
+          "original_title": "成长环境对人的影响（名人为例）",
+          "firefly_no": 138
+        }
+      ]
+    },
+    {
+      "topic": "Television functions: relaxation and companionship",
+      "topic_sentence": "A balanced essay can argue that television functions: relaxation and companionship should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101130",
+          "original_title": "电视功能（放松、陪伴）",
+          "firefly_no": 139
+        }
+      ]
+    },
+    {
+      "topic": "Advice for women balancing family and career",
+      "topic_sentence": "A balanced essay can argue that advice for women balancing family and career should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101131",
+          "original_title": "女性兼顾家庭与职场的建议",
+          "firefly_no": 140
+        }
+      ]
+    },
+    {
+      "topic": "Whether schools should require uniforms",
+      "topic_sentence": "A balanced essay can argue that whether schools should require uniforms should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101133",
+          "original_title": "学校是否应该强制规定穿校服",
+          "firefly_no": 141
+        }
+      ]
+    },
+    {
+      "topic": "Whether excessive workload helps people achieve more",
+      "topic_sentence": "A balanced essay can argue that whether excessive workload helps people achieve more should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101141",
+          "original_title": "负担过重有利于更高成就",
+          "firefly_no": 142
+        }
+      ]
+    },
+    {
+      "topic": "Advantages and disadvantages of excessive competition for individuals and society",
+      "topic_sentence": "A balanced essay can argue that advantages and disadvantages of excessive competition for individuals and society should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101142",
+          "original_title": "过度竞争对个人和社会的利弊？",
+          "firefly_no": 143
+        }
+      ]
+    },
+    {
+      "topic": "The impact of air travel on modern life",
+      "topic_sentence": "A balanced essay can argue that the impact of air travel on modern life should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101144",
+          "original_title": "航空旅行对现代生活的影响",
+          "firefly_no": 144
+        }
+      ]
+    },
+    {
+      "topic": "Multiple forms of media delivering information to the public at the same time",
+      "topic_sentence": "A balanced essay can argue that multiple forms of media delivering information to the public at the same time should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101145",
+          "original_title": "多种媒体同时向公众传递信息",
+          "firefly_no": 145
+        }
+      ]
+    },
+    {
+      "topic": "Young people imitating celebrities",
+      "topic_sentence": "A balanced essay can argue that young people imitating celebrities should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101146",
+          "original_title": "年轻人模仿名人",
+          "firefly_no": 146
+        }
+      ]
+    },
+    {
+      "topic": "Whether employers should provide fitness equipment at the workplace",
+      "topic_sentence": "A balanced essay can argue that whether employers should provide fitness equipment at the workplace should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101147",
+          "original_title": "雇主是否应该在工作场所提供健身器材",
+          "firefly_no": 147
+        }
+      ]
+    },
+    {
+      "topic": "Whether teachers should be paid according to students' achievements",
+      "topic_sentence": "A balanced essay can argue that whether teachers should be paid according to students' achievements should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101148",
+          "original_title": "是否应该为学生的成就而付钱给老师",
+          "firefly_no": 148
+        }
+      ]
+    },
+    {
+      "topic": "Whether arts and culture should be funded by government or charity",
+      "topic_sentence": "A balanced essay can argue that whether arts and culture should be funded by government or charity should be evaluated through its impact on individuals, society, education, the economy, and long-term public wellbeing, rather than from only one simple advantage or disadvantage.",
+      "predict": "N",
+      "source": [
+        {
+          "source": "Firefly",
+          "number": "#101149",
+          "original_title": "文艺应该政府资助还是慈善资助",
+          "firefly_no": 149
+        }
+      ]
+    }
+  ]
+}

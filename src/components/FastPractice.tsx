@@ -1,13 +1,19 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { getFastFeedback, FastFeedback } from '../services/geminiService';
-import { Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
+import { Sparkles, ChevronDown, ChevronUp, Timer, RotateCcw } from 'lucide-react';
 
 interface FastPracticeProps {
   topic: string;
   desc: string;
+}
+
+function formatTime(secs: number): string {
+  const m = Math.floor(secs / 60).toString().padStart(2, '0');
+  const s = (secs % 60).toString().padStart(2, '0');
+  return `${m}:${s}`;
 }
 
 export const FastPractice: React.FC<FastPracticeProps> = ({ topic, desc }) => {
@@ -17,8 +23,35 @@ export const FastPractice: React.FC<FastPracticeProps> = ({ topic, desc }) => {
   const [expandedAdvice, setExpandedAdvice] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [timerSeconds, setTimerSeconds] = useState(0);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    if (timerRunning) {
+      timerRef.current = setInterval(() => setTimerSeconds(s => s + 1), 1000);
+    } else {
+      if (timerRef.current) clearInterval(timerRef.current);
+    }
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [timerRunning]);
+
+  const handleSentenceChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const val = e.target.value;
+    setSentence(val);
+    if (!timerRunning && val.length > 0) setTimerRunning(true);
+  };
+
+  const resetTimer = () => {
+    setTimerRunning(false);
+    setTimerSeconds(0);
+  };
+
+  const wordCount = sentence.trim() ? sentence.trim().split(/\s+/).length : 0;
+
   const handleAnalyze = async () => {
     if (!sentence.trim()) return;
+    setTimerRunning(false);
     setLoading(true);
     setError(null);
     try {
@@ -40,9 +73,9 @@ export const FastPractice: React.FC<FastPracticeProps> = ({ topic, desc }) => {
 
   const highlightSentence = (original: string, issues: FastFeedback['issues']) => {
     if (!issues || issues.length === 0) return original;
-    
+
     const sortedIssues = [...issues].sort((a, b) => a.start - b.start);
-    let result: React.ReactNode[] = [];
+    const result: React.ReactNode[] = [];
     let lastIndex = 0;
 
     sortedIssues.forEach((issue, idx) => {
@@ -71,15 +104,38 @@ export const FastPractice: React.FC<FastPracticeProps> = ({ topic, desc }) => {
     <div className="space-y-6">
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-semibold text-slate-700 mb-2">Your Topic Sentence</label>
-          <textarea 
+          <div className="flex items-center justify-between mb-2">
+            <label className="text-sm font-semibold text-slate-700">Your Topic Sentence</label>
+            {/* Timer + word count bar */}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5 text-sm font-mono font-semibold text-slate-500">
+                <Timer size={14} className="text-slate-400" />
+                <span className={timerRunning ? 'text-indigo-600' : 'text-slate-400'}>
+                  {formatTime(timerSeconds)}
+                </span>
+                {(timerSeconds > 0 || timerRunning) && (
+                  <button
+                    onClick={resetTimer}
+                    className="ml-1 p-0.5 text-slate-400 hover:text-slate-600 transition-colors"
+                    title="Reset timer"
+                  >
+                    <RotateCcw size={12} />
+                  </button>
+                )}
+              </div>
+              <span className="text-xs font-semibold text-slate-400 tabular-nums">
+                {wordCount} <span className="font-normal">words</span>
+              </span>
+            </div>
+          </div>
+          <textarea
             value={sentence}
-            onChange={(e) => setSentence(e.target.value)}
+            onChange={handleSentenceChange}
             placeholder="Write one complex topic sentence here..."
             className="w-full min-h-[100px] p-4 rounded-2xl border border-slate-200 bg-white shadow-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
           />
         </div>
-        <button 
+        <button
           onClick={handleAnalyze}
           disabled={loading || !sentence.trim()}
           className="w-full py-3 bg-slate-900 text-white rounded-2xl font-semibold flex items-center justify-center gap-2 hover:bg-slate-800 disabled:opacity-50 transition-all shadow-lg"
@@ -102,7 +158,7 @@ export const FastPractice: React.FC<FastPracticeProps> = ({ topic, desc }) => {
       </div>
 
       {feedback && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="grid grid-cols-1 lg:grid-cols-10 gap-6"
@@ -112,14 +168,14 @@ export const FastPractice: React.FC<FastPracticeProps> = ({ topic, desc }) => {
             <div className="relative w-40 h-40">
               <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
                 <circle cx="60" cy="60" r="46" fill="none" stroke="#f1f5f9" strokeWidth="12" />
-                <motion.circle 
-                  cx="60" cy="60" r="46" fill="none" 
-                  stroke={getBandColor(feedback.score.pte)} 
-                  strokeWidth="12" 
+                <motion.circle
+                  cx="60" cy="60" r="46" fill="none"
+                  stroke={getBandColor(feedback.score.pte)}
+                  strokeWidth="12"
                   strokeLinecap="round"
-                  initial={{ strokeDasharray: "289 289", strokeDashoffset: 289 }}
+                  initial={{ strokeDasharray: '289 289', strokeDashoffset: 289 }}
                   animate={{ strokeDashoffset: 289 - (feedback.score.pte / 5) * 289 }}
-                  transition={{ duration: 1, ease: "easeOut" }}
+                  transition={{ duration: 1, ease: 'easeOut' }}
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -132,7 +188,7 @@ export const FastPractice: React.FC<FastPracticeProps> = ({ topic, desc }) => {
               {[
                 { label: 'Complexity', val: feedback.structure.complexity },
                 { label: 'Clarity', val: feedback.structure.clarity },
-                { label: 'Coherence', val: feedback.structure.coherence }
+                { label: 'Coherence', val: feedback.structure.coherence },
               ].map(m => (
                 <div key={m.label} className="space-y-1">
                   <div className="flex justify-between text-[10px] font-bold text-slate-400 uppercase tracking-widest">
@@ -140,7 +196,7 @@ export const FastPractice: React.FC<FastPracticeProps> = ({ topic, desc }) => {
                     <span>{m.val}/5</span>
                   </div>
                   <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                    <motion.div 
+                    <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${(m.val / 5) * 100}%` }}
                       className="h-full bg-indigo-500 rounded-full"
@@ -152,7 +208,7 @@ export const FastPractice: React.FC<FastPracticeProps> = ({ topic, desc }) => {
 
             <div className="mt-6 text-sm text-slate-500 leading-relaxed">
               <p className={expandedAdvice ? '' : 'line-clamp-3'}>{feedback.advice}</p>
-              <button 
+              <button
                 onClick={() => setExpandedAdvice(!expandedAdvice)}
                 className="text-indigo-600 font-semibold mt-1 flex items-center gap-1"
               >
@@ -168,7 +224,7 @@ export const FastPractice: React.FC<FastPracticeProps> = ({ topic, desc }) => {
               <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 text-lg leading-relaxed font-medium text-slate-800">
                 {highlightSentence(sentence, feedback.issues)}
               </div>
-              
+
               <div className="space-y-3">
                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Top Fixes</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -187,7 +243,7 @@ export const FastPractice: React.FC<FastPracticeProps> = ({ topic, desc }) => {
               <div className="p-4 bg-indigo-50 rounded-2xl border border-indigo-100 text-lg leading-relaxed font-semibold text-indigo-900">
                 {feedback.corrected}
               </div>
-              
+
               <div className="flex flex-wrap gap-2">
                 {feedback.recommendedExpressions.map((exp, i) => (
                   <span key={i} className="px-3 py-1 bg-white border border-slate-200 rounded-full text-xs font-medium text-slate-600 shadow-sm">
