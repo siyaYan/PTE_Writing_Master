@@ -150,7 +150,11 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({
   const timerColor = timerSeconds <= 120 ? 'text-red-600'
     : timerSeconds <= 300 ? 'text-amber-600' : 'text-slate-700';
   const timerBg = timerSeconds <= 120 ? 'bg-red-50 border-red-200'
-    : timerSeconds <= 300 ? 'bg-amber-50 border-amber-200' : 'bg-slate-50 border-slate-200';
+    : timerSeconds <= 300 ? 'bg-amber-50 border-amber-200' : 'bg-white border-slate-200';
+
+  const WORD_LIMIT = 300;
+  const isOverLimit = totalWords > WORD_LIMIT;
+  const wordCountColor = isOverLimit ? 'text-red-600' : totalWords > 270 ? 'text-amber-600' : 'text-slate-500';
 
   const buildPayload = () => ({
     Topic: topic,
@@ -233,8 +237,8 @@ After scoring, use the Notion MCP to log this to my PTE Tracker.`;
         ))}
       </div>
 
-      {/* Timer bar */}
-      <div className={`flex items-center justify-between px-4 py-3 rounded-2xl border ${timerBg} transition-colors`}>
+      {/* Timer bar — sticky so it floats while scrolling */}
+      <div className={`sticky top-2 z-40 flex items-center justify-between px-4 py-3 rounded-2xl border shadow-md ${timerBg} transition-colors`}>
         <div className="flex items-center gap-2">
           <Timer size={16} className={timerSeconds <= 120 ? 'text-red-500' : timerSeconds <= 300 ? 'text-amber-500' : 'text-slate-400'} />
           <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Essay Timer</span>
@@ -246,8 +250,9 @@ After scoring, use the Notion MCP to log this to my PTE Tracker.`;
           <span className={`text-2xl font-black font-mono tabular-nums ${timerColor} ${timerSeconds <= 120 && timerSeconds > 0 ? 'animate-pulse' : ''}`}>
             {formatTime(timerSeconds)}
           </span>
-          <span className="text-xs font-semibold text-slate-400 tabular-nums">
-            {totalWords} <span className="font-normal">words</span>
+          <span className={`text-xs font-semibold tabular-nums ${wordCountColor}`}>
+            {totalWords}<span className="font-normal text-slate-400">/300</span>
+            {isOverLimit && <span className="ml-1.5 text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full font-bold">Over limit</span>}
           </span>
           <button onClick={resetTimer} className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-white rounded-lg transition-colors" title="Reset timer">
             <RotateCcw size={14} />
