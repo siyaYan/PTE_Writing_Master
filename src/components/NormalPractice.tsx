@@ -6,11 +6,29 @@ import { generateNormalEssay, NormalEssay } from '../services/geminiService';
 import {
   Sparkles, Timer, RotateCcw,
   Send, Bot, CheckCircle, XCircle, ChevronDown, ChevronUp,
+  Trophy, ThumbsUp, Target, FileText,
 } from 'lucide-react';
+
 import {
   ESSAY_TYPES, EssayTypeId, getEssayType,
   buildParagraphText, substituteTemplate,
 } from '../data/essayTemplates';
+
+interface DimensionScore {
+  name: string;
+  score: number;
+  max: number;
+}
+
+interface ScoringResult {
+  scores: {
+    overall: number;
+    dimensions: DimensionScore[];
+  };
+  strengths: string[];
+  areasToImprove: string[];
+  feedbackSummary: string;
+}
 
 interface NormalPracticeProps {
   topic: string;
@@ -21,6 +39,9 @@ interface NormalPracticeProps {
 
 const ESSAY_SECONDS = 20 * 60;
 const WEBHOOK_URL = process.env.NEXT_PUBLIC_WEBHOOK_URL ?? 'http://localhost:5000/mcp/incoming';
+const WEBHOOK_BASE = (() => {
+  try { return new URL(WEBHOOK_URL).origin; } catch { return ''; }
+})();
 
 const TYPE_COLOR: Record<string, string> = {
   Simple: 'bg-sky-100 text-sky-700',
@@ -82,7 +103,9 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({
   const textareaRefs = useRef<(HTMLTextAreaElement | null)[]>([null, null, null, null]);
 
   const [sendingReview, setSendingReview] = useState(false);
-  const [reviewStatus, setReviewStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [reviewStatus, setReviewStatus] = useState<'idle' | 'polling' | 'success' | 'error'>('idle');
+  const [webhookFeedback, setWebhookFeedback] = useState<ScoringResult | null>(null);
+  const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [copiedForClaude, setCopiedForClaude] = useState(false);
 
   const typeDef = getEssayType(essayType);
@@ -101,6 +124,10 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({
     }
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [timerRunning, timerSeconds]);
+
+  useEffect(() => {
+    return () => { if (pollingRef.current) clearInterval(pollingRef.current); };
+  }, []);
 
   const handleParaChange = (idx: number, value: string) => {
     const next = [...paragraphs];
@@ -185,6 +212,8 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({
     stopTimer();
     setSendingReview(true);
     setReviewStatus('idle');
+    setWebhookFeedback(null);
+    if (pollingRef.current) clearInterval(pollingRef.current);
     try {
       const res = await fetch(WEBHOOK_URL, {
         method: 'POST',
@@ -192,10 +221,27 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({
         body: JSON.stringify(buildPayload()),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      setReviewStatus('success');
+      const data = await res.json();
+      const jobId: string = data.scoring_job_id;
+      setSendingReview(false);
+      setReviewStatus('polling');
+      pollingRef.current = setInterval(async () => {
+        try {
+          const r = await fetch(`${WEBHOOK_BASE}/result/${jobId}`);
+          if (!r.ok) return;
+          const job = await r.json();
+          if (job.status === 'done') {
+            clearInterval(pollingRef.current!);
+            setWebhookFeedback(job.result);
+            setReviewStatus('success');
+          } else if (job.status === 'error') {
+            clearInterval(pollingRef.current!);
+            setReviewStatus('error');
+          }
+        } catch { /* keep polling */ }
+      }, 3000);
     } catch {
       setReviewStatus('error');
-    } finally {
       setSendingReview(false);
     }
   };
@@ -354,20 +400,22 @@ After scoring, use the Notion MCP to log this to my PTE Tracker.`;
         <div className="grid grid-cols-2 gap-3">
           <button
             onClick={handleSendForReview}
-            disabled={sendingReview || totalWords === 0}
+            disabled={sendingReview || reviewStatus === 'polling' || totalWords === 0}
             className={`flex items-center justify-center gap-2 px-4 py-3 rounded-2xl font-semibold text-sm transition-all shadow-sm disabled:opacity-50 ${
               reviewStatus === 'success' ? 'bg-emerald-600 text-white'
                 : reviewStatus === 'error' ? 'bg-red-600 text-white'
+                : reviewStatus === 'polling' ? 'bg-indigo-600 text-white'
                 : 'bg-slate-800 text-white hover:bg-slate-700'
             }`}
           >
-            {sendingReview
+            {sendingReview || reviewStatus === 'polling'
               ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               : reviewStatus === 'success' ? <CheckCircle size={16} />
               : reviewStatus === 'error' ? <XCircle size={16} />
               : <Send size={16} />}
             {sendingReview ? 'Sending…'
-              : reviewStatus === 'success' ? 'Sent!'
+              : reviewStatus === 'polling' ? 'Scoring…'
+              : reviewStatus === 'success' ? 'Scored!'
               : reviewStatus === 'error' ? 'Failed — Retry'
               : 'Send for Review'}
           </button>
@@ -422,6 +470,96 @@ After scoring, use the Notion MCP to log this to my PTE Tracker.`;
               </li>
             ))}
           </ul>
+        </motion.div>
+      )}
+
+      {/* Official Scoring Result */}
+      {webhookFeedback && (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white border border-emerald-200 rounded-3xl p-6 shadow-sm space-y-5"
+        >
+          {/* Header + overall score */}
+          <div className="flex items-center gap-4">
+            <div className="shrink-0 w-20 h-20 rounded-2xl bg-emerald-50 flex flex-col items-center justify-center">
+              <Trophy size={16} className="text-emerald-400 mb-0.5" />
+              <span className="text-3xl font-black text-emerald-600 leading-none">{webhookFeedback.scores.overall}</span>
+              <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-wider">/ 90</span>
+            </div>
+            <div>
+              <h3 className="font-bold text-slate-900 text-base">Official Score</h3>
+              <p className="text-xs text-slate-400 mt-0.5">PTE Writing · {typeDef.label}</p>
+            </div>
+          </div>
+
+          {/* Dimension scores */}
+          {webhookFeedback.scores.dimensions?.length > 0 && (
+            <div className="space-y-2.5">
+              {webhookFeedback.scores.dimensions.map((dim) => {
+                const pct = Math.round((dim.score / dim.max) * 100);
+                const barColor = pct >= 70 ? 'bg-emerald-500' : pct >= 45 ? 'bg-amber-400' : 'bg-red-400';
+                return (
+                  <div key={dim.name}>
+                    <div className="flex justify-between items-baseline mb-1">
+                      <span className="text-xs font-semibold text-slate-600">{dim.name}</span>
+                      <span className="text-xs font-bold text-slate-700 tabular-nums">{dim.score}<span className="font-normal text-slate-400">/{dim.max}</span></span>
+                    </div>
+                    <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
+                      <motion.div
+                        className={`h-full rounded-full ${barColor}`}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${pct}%` }}
+                        transition={{ duration: 0.6, ease: 'easeOut' }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Feedback summary */}
+          {webhookFeedback.feedbackSummary && (
+            <div className="flex gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <FileText size={15} className="shrink-0 text-slate-400 mt-0.5" />
+              <p className="text-sm text-slate-600 leading-relaxed">{webhookFeedback.feedbackSummary}</p>
+            </div>
+          )}
+
+          {/* Strengths */}
+          {webhookFeedback.strengths?.length > 0 && (
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-700 uppercase tracking-wider">
+                <ThumbsUp size={12} /> Strengths
+              </div>
+              <ul className="space-y-1">
+                {webhookFeedback.strengths.map((s, i) => (
+                  <li key={i} className="flex gap-2 text-sm text-slate-700">
+                    <span className="shrink-0 text-emerald-500 font-bold mt-0.5">✓</span>
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Areas to improve */}
+          {webhookFeedback.areasToImprove?.length > 0 && (
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-amber-700 uppercase tracking-wider">
+                <Target size={12} /> Areas to Improve
+              </div>
+              <ul className="space-y-1">
+                {webhookFeedback.areasToImprove.map((a, i) => (
+                  <li key={i} className="flex gap-2 text-sm text-slate-700">
+                    <span className="shrink-0 text-amber-500 font-bold mt-0.5">→</span>
+                    {a}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </motion.div>
       )}
     </div>
