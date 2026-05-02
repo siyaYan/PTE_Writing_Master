@@ -232,7 +232,31 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({
           const job = await r.json();
           if (job.status === 'done') {
             clearInterval(pollingRef.current!);
-            setWebhookFeedback(job.result);
+            const raw = job.result;
+            const toArr = (v: unknown): string[] =>
+              Array.isArray(v) ? v : typeof v === 'string' && v.trim() ? v.split(/\n+/).map(s => s.replace(/^[-•]\s*/, '').trim()).filter(Boolean) : [];
+            const toDims = (v: unknown): DimensionScore[] => {
+              if (Array.isArray(v)) return v;
+              if (v && typeof v === 'object') {
+                return Object.entries(v as Record<string, unknown>).map(([name, val]) => {
+                  if (val && typeof val === 'object') {
+                    const o = val as Record<string, number>;
+                    return { name, score: o.score ?? 0, max: o.max ?? 90 };
+                  }
+                  return { name, score: Number(val) ?? 0, max: 90 };
+                });
+              }
+              return [];
+            };
+            setWebhookFeedback({
+              scores: {
+                overall: raw?.scores?.overall ?? raw?.overall ?? 0,
+                dimensions: toDims(raw?.scores?.dimensions ?? raw?.dimensions),
+              },
+              strengths: toArr(raw?.strengths),
+              areasToImprove: toArr(raw?.areasToImprove ?? raw?.areas_to_improve),
+              feedbackSummary: raw?.feedbackSummary ?? raw?.feedback_summary ?? '',
+            });
             setReviewStatus('success');
           } else if (job.status === 'error') {
             clearInterval(pollingRef.current!);
