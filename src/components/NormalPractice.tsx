@@ -135,18 +135,19 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({
   const accent = typeDef.accent;
 
   useEffect(() => {
-    if (timerRunning && timerSeconds > 0) {
-      timerRef.current = setInterval(() => {
-        setTimerSeconds(s => {
-          if (s <= 1) { setTimerRunning(false); return 0; }
-          return s - 1;
-        });
-      }, 1000);
-    } else {
-      if (timerRef.current) clearInterval(timerRef.current);
-    }
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [timerRunning, timerSeconds]);
+    if (!timerRunning) return;
+    timerRef.current = setInterval(() => {
+      setTimerSeconds(s => {
+        if (s <= 1) {
+          clearInterval(timerRef.current!);
+          setTimerRunning(false);
+          return 0;
+        }
+        return s - 1;
+      });
+    }, 1000);
+    return () => { clearInterval(timerRef.current!); };
+  }, [timerRunning]);
 
   useEffect(() => {
     return () => { if (pollingRef.current) clearInterval(pollingRef.current); };
