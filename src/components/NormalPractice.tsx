@@ -14,20 +14,43 @@ import {
   buildParagraphText, substituteTemplate,
 } from '../data/essayTemplates';
 
-interface DimensionScore {
-  name: string;
-  score: number;
-  max: number;
-}
-
 interface ScoringResult {
-  scores: {
-    overall: number;
-    dimensions: DimensionScore[];
-  };
+  scores: { content: number; coherence: number; grammar: number; vocabulary: number; spelling: number; overall: number; };
   strengths: string[];
   areasToImprove: string[];
   feedbackSummary: string;
+}
+
+const DIMS: { key: keyof ScoringResult['scores']; label: string; max: number }[] = [
+  { key: 'content',    label: 'Content',    max: 3 },
+  { key: 'coherence',  label: 'Coherence',  max: 2 },
+  { key: 'grammar',    label: 'Grammar',    max: 2 },
+  { key: 'vocabulary', label: 'Vocabulary', max: 2 },
+  { key: 'spelling',   label: 'Spelling',   max: 2 },
+];
+
+function toBullets(val: unknown): string[] {
+  const s = typeof val === 'string' ? val : '';
+  return s.split('\n')
+    .map(line => line.replace(/^[•\-]\s*/, '').trim())
+    .filter(line => line.length > 0);
+}
+
+function parseScoringResult(raw: Record<string, unknown>): ScoringResult {
+  const sc = (raw?.scores ?? {}) as Record<string, number>;
+  return {
+    scores: {
+      content:    sc.content    ?? 0,
+      coherence:  sc.coherence  ?? 0,
+      grammar:    sc.grammar    ?? 0,
+      vocabulary: sc.vocabulary ?? 0,
+      spelling:   sc.spelling   ?? 0,
+      overall:    sc.overall    ?? 0,
+    },
+    strengths:      toBullets(raw?.strengths),
+    areasToImprove: toBullets(raw?.areasToImprove),
+    feedbackSummary: typeof raw?.feedbackSummary === 'string' ? raw.feedbackSummary.trim() : '',
+  };
 }
 
 interface NormalPracticeProps {
@@ -232,31 +255,7 @@ export const NormalPractice: React.FC<NormalPracticeProps> = ({
           const job = await r.json();
           if (job.status === 'done') {
             clearInterval(pollingRef.current!);
-            const raw = job.result;
-            const toArr = (v: unknown): string[] =>
-              Array.isArray(v) ? v : typeof v === 'string' && v.trim() ? v.split(/\n+/).map(s => s.replace(/^[-•]\s*/, '').trim()).filter(Boolean) : [];
-            const toDims = (v: unknown): DimensionScore[] => {
-              if (Array.isArray(v)) return v;
-              if (v && typeof v === 'object') {
-                return Object.entries(v as Record<string, unknown>).map(([name, val]) => {
-                  if (val && typeof val === 'object') {
-                    const o = val as Record<string, number>;
-                    return { name, score: o.score ?? 0, max: o.max ?? 90 };
-                  }
-                  return { name, score: Number(val) ?? 0, max: 90 };
-                });
-              }
-              return [];
-            };
-            setWebhookFeedback({
-              scores: {
-                overall: raw?.scores?.overall ?? raw?.overall ?? 0,
-                dimensions: toDims(raw?.scores?.dimensions ?? raw?.dimensions),
-              },
-              strengths: toArr(raw?.strengths),
-              areasToImprove: toArr(raw?.areasToImprove ?? raw?.areas_to_improve),
-              feedbackSummary: raw?.feedbackSummary ?? raw?.feedback_summary ?? '',
-            });
+            setWebhookFeedback(parseScoringResult(job.result as Record<string, unknown>));
             setReviewStatus('success');
           } else if (job.status === 'error') {
             clearInterval(pollingRef.current!);
@@ -498,94 +497,121 @@ After scoring, use the Notion MCP to log this to my PTE Tracker.`;
       )}
 
       {/* Official Scoring Result */}
-      {webhookFeedback && (
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white border border-emerald-200 rounded-3xl p-6 shadow-sm space-y-5"
-        >
-          {/* Header + overall score */}
-          <div className="flex items-center gap-4">
-            <div className="shrink-0 w-20 h-20 rounded-2xl bg-emerald-50 flex flex-col items-center justify-center">
-              <Trophy size={16} className="text-emerald-400 mb-0.5" />
-              <span className="text-3xl font-black text-emerald-600 leading-none">{webhookFeedback.scores.overall}</span>
-              <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-wider">/ 90</span>
-            </div>
-            <div>
-              <h3 className="font-bold text-slate-900 text-base">Official Score</h3>
-              <p className="text-xs text-slate-400 mt-0.5">PTE Writing · {typeDef.label}</p>
-            </div>
-          </div>
-
-          {/* Dimension scores */}
-          {webhookFeedback.scores.dimensions?.length > 0 && (
-            <div className="space-y-2.5">
-              {webhookFeedback.scores.dimensions.map((dim) => {
-                const pct = Math.round((dim.score / dim.max) * 100);
-                const barColor = pct >= 70 ? 'bg-emerald-500' : pct >= 45 ? 'bg-amber-400' : 'bg-red-400';
-                return (
-                  <div key={dim.name}>
-                    <div className="flex justify-between items-baseline mb-1">
-                      <span className="text-xs font-semibold text-slate-600">{dim.name}</span>
-                      <span className="text-xs font-bold text-slate-700 tabular-nums">{dim.score}<span className="font-normal text-slate-400">/{dim.max}</span></span>
-                    </div>
-                    <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
-                      <motion.div
-                        className={`h-full rounded-full ${barColor}`}
-                        initial={{ width: 0 }}
-                        animate={{ width: `${pct}%` }}
-                        transition={{ duration: 0.6, ease: 'easeOut' }}
-                      />
-                    </div>
+      {webhookFeedback && (() => {
+        const ov = webhookFeedback.scores.overall;
+        const ovBand = ov >= 79 ? { label: 'Expert', bg: 'from-emerald-500 to-teal-600', text: 'text-emerald-700', badge: 'bg-emerald-100 text-emerald-700' }
+          : ov >= 65 ? { label: 'Advanced', bg: 'from-sky-500 to-indigo-600', text: 'text-sky-700', badge: 'bg-sky-100 text-sky-700' }
+          : ov >= 50 ? { label: 'Competent', bg: 'from-amber-400 to-orange-500', text: 'text-amber-700', badge: 'bg-amber-100 text-amber-700' }
+          : { label: 'Developing', bg: 'from-rose-400 to-red-500', text: 'text-rose-700', badge: 'bg-rose-100 text-rose-700' };
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="rounded-3xl overflow-hidden border border-slate-200 shadow-lg"
+          >
+            {/* Gradient header */}
+            <div className={`bg-gradient-to-r ${ovBand.bg} px-6 py-5 text-white`}>
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Trophy size={16} className="opacity-80" />
+                    <span className="text-xs font-bold uppercase tracking-widest opacity-80">Official Score Report</span>
                   </div>
-                );
-              })}
-            </div>
-          )}
-
-          {/* Feedback summary */}
-          {webhookFeedback.feedbackSummary && (
-            <div className="flex gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-              <FileText size={15} className="shrink-0 text-slate-400 mt-0.5" />
-              <p className="text-sm text-slate-600 leading-relaxed">{webhookFeedback.feedbackSummary}</p>
-            </div>
-          )}
-
-          {/* Strengths */}
-          {webhookFeedback.strengths?.length > 0 && (
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-700 uppercase tracking-wider">
-                <ThumbsUp size={12} /> Strengths
+                  <p className="text-sm opacity-75">{typeDef.label} · {topic.slice(0, 50)}{topic.length > 50 ? '…' : ''}</p>
+                </div>
+                <div className="text-right">
+                  <div className="text-5xl font-black leading-none tabular-nums">{ov || '–'}</div>
+                  <div className="text-xs opacity-70 font-semibold mt-0.5">out of 90</div>
+                  {ov > 0 && <div className="mt-1 text-xs font-bold bg-white/20 px-2 py-0.5 rounded-full inline-block">{ovBand.label}</div>}
+                </div>
               </div>
-              <ul className="space-y-1">
-                {webhookFeedback.strengths.map((s, i) => (
-                  <li key={i} className="flex gap-2 text-sm text-slate-700">
-                    <span className="shrink-0 text-emerald-500 font-bold mt-0.5">✓</span>
-                    {s}
-                  </li>
-                ))}
-              </ul>
             </div>
-          )}
 
-          {/* Areas to improve */}
-          {webhookFeedback.areasToImprove?.length > 0 && (
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-amber-700 uppercase tracking-wider">
-                <Target size={12} /> Areas to Improve
+            <div className="bg-white p-5 space-y-5">
+              {/* Dimension score tiles */}
+              <div className="grid grid-cols-5 gap-2">
+                {DIMS.map(({ key, label, max }) => {
+                  const score = webhookFeedback.scores[key] as number;
+                  const full = score >= max;
+                  const partial = score > 0 && score < max;
+                  const tileColor = full ? 'bg-emerald-50 border-emerald-200' : partial ? 'bg-amber-50 border-amber-200' : 'bg-red-50 border-red-200';
+                  const numColor = full ? 'text-emerald-700' : partial ? 'text-amber-700' : 'text-red-600';
+                  const dotFill = full ? 'bg-emerald-500' : partial ? 'bg-amber-400' : 'bg-slate-200';
+                  const dotEmpty = 'bg-slate-200';
+                  return (
+                    <div key={key} className={`rounded-xl border p-2 text-center ${tileColor}`}>
+                      <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wide mb-1.5 leading-tight">{label}</div>
+                      <div className={`text-lg font-black tabular-nums leading-none ${numColor}`}>{score}</div>
+                      <div className="text-[9px] text-slate-400 font-medium mb-1.5">/{max}</div>
+                      <div className="flex justify-center gap-0.5">
+                        {Array.from({ length: max }).map((_, i) => (
+                          <div key={i} className={`w-2 h-2 rounded-full ${i < score ? dotFill : dotEmpty}`} />
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-              <ul className="space-y-1">
-                {webhookFeedback.areasToImprove.map((a, i) => (
-                  <li key={i} className="flex gap-2 text-sm text-slate-700">
-                    <span className="shrink-0 text-amber-500 font-bold mt-0.5">→</span>
-                    {a}
-                  </li>
-                ))}
-              </ul>
+
+              {/* Score legend */}
+              <div className="flex items-center gap-3 text-[10px] text-slate-400 px-1">
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" /> Full marks</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-400 inline-block" /> Partial</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-slate-200 inline-block" /> Missed</span>
+              </div>
+
+              {/* Feedback summary */}
+              {webhookFeedback.feedbackSummary && (
+                <div className="flex gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                  <FileText size={15} className="shrink-0 text-slate-400 mt-0.5" />
+                  <p className="text-sm text-slate-600 leading-relaxed">{webhookFeedback.feedbackSummary}</p>
+                </div>
+              )}
+
+              {/* Strengths */}
+              {webhookFeedback.strengths.length > 0 && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-1.5">
+                    <ThumbsUp size={13} className="text-emerald-600" />
+                    <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">Strengths</span>
+                  </div>
+                  <div className="space-y-2">
+                    {webhookFeedback.strengths.map((item, i) => (
+                      <div key={i} className="flex gap-3 p-3 rounded-xl bg-emerald-50 border border-emerald-100">
+                        <div className="shrink-0 w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center mt-0.5">
+                          <span className="text-white text-[9px] font-black">✓</span>
+                        </div>
+                        <p className="text-sm text-slate-600 leading-snug">{item}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Areas to improve */}
+              {webhookFeedback.areasToImprove.length > 0 && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-1.5">
+                    <Target size={13} className="text-amber-600" />
+                    <span className="text-xs font-bold text-amber-700 uppercase tracking-wider">Areas to Improve</span>
+                  </div>
+                  <div className="space-y-2">
+                    {webhookFeedback.areasToImprove.map((item, i) => (
+                      <div key={i} className="flex gap-3 p-3 rounded-xl bg-amber-50 border border-amber-100">
+                        <div className="shrink-0 w-5 h-5 rounded-full bg-amber-400 flex items-center justify-center mt-0.5">
+                          <span className="text-white text-[9px] font-black">{i + 1}</span>
+                        </div>
+                        <p className="text-sm text-slate-600 leading-snug">{item}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-        </motion.div>
-      )}
+          </motion.div>
+        );
+      })()}
     </div>
   );
 };
